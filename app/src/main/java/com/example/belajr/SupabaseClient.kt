@@ -1,5 +1,6 @@
 package com.example.belajr
 
+import com.example.belajr.BuildConfig
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
@@ -8,8 +9,8 @@ import io.ktor.client.engine.okhttp.OkHttp
 
 object SupabaseClient {
     val client = createSupabaseClient(
-        supabaseUrl = "https://eerydjnbbmkgipmrjggn.supabase.co",
-        supabaseKey = "sb_publishable_je7ZuZ0cmuffR41rG1_WPA_dmegyN51"
+        supabaseUrl = BuildConfig.SUPABASE_URL,
+        supabaseKey = BuildConfig.SUPABASE_ANON_KEY
     ) {
         install(Auth)
         install(Postgrest)

@@ -1,7 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+fun getLocalProperty(propertyName: String): String {
+    val properties = Properties()
+    val localPropertiesFile = project.rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        properties.load(FileInputStream(localPropertiesFile))
+        return properties.getProperty(propertyName) ?: ""
+    }
+    return ""
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -19,8 +33,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
 
+        buildConfigField("String", "SUPABASE_URL",
+            "\"${getLocalProperty("SUPABASE_URL")}\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY",
+            "\"${getLocalProperty("SUPABASE_ANON_KEY")}\"")
+    }
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -56,6 +77,11 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.supabase.storage)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
+    implementation("com.google.firebase:firebase-analytics")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
