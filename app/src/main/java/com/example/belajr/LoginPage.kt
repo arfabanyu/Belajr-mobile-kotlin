@@ -1,8 +1,10 @@
 package com.example.belajr
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,11 @@ class LoginPage : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.username)
         val passwordEditText = findViewById<EditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.mainButton)
+        val registerLink = findViewById<TextView>(R.id.registerLink)
+
+        registerLink.setOnClickListener {
+            startActivity(Intent(this, RegisterPage::class.java))
+        }
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
@@ -48,8 +55,10 @@ class LoginPage : AppCompatActivity() {
                     this.email = email
                     this.password = password
                 }
-                
+
                 Toast.makeText(this@LoginPage, "Login Berhasil!", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@LoginPage, HomePage::class.java))
+                finish()
                 
             } catch (e: Exception) {
                 Toast.makeText(this@LoginPage, "Login Gagal: ${e.message}", Toast.LENGTH_LONG).show()
