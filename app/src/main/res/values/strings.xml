@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BelaJR</string>
+
+    <!-- Placeholder strings (nanti di-replace dari Supabase) -->
+    <string name="placeholder_username">Raihan</string>
+    <string name="placeholder_username_at">raihan1</string>
+    <string name="placeholder_email">Raihan1@gmail.com</string>
+    <string name="placeholder_phone">085767459792</string>
+    <string name="placeholder_bio">Tambahkan bio kamu di sini...</string>
+</resources>
