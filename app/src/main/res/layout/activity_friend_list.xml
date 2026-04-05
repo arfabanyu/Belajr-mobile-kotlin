@@ -16,21 +16,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"
+            android:fontFamily="@font/righteous"
+            android:text="My Friends"
             android:textColor="@color/white"
-            android:textSize="22sp"
-            android:fontFamily="@font/righteous"/>
+            android:textSize="22sp" />
     </LinearLayout>
 
-    <!-- Notification List -->
+    <!-- Friend List Content -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvNotifications"
+        android:id="@+id/rvFriendList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="10dp"/>
 
-    <!-- Bottom Nav -->
+    <!-- Navbar Bawah -->
     <include layout="@layout/layout_bottom_nav" />
 
 </LinearLayout>

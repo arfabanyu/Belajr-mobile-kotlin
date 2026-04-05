@@ -1,144 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#6F86D6">
+    android:background="@color/bg_light">
 
-    <!-- HEADER -->
-    <LinearLayout
+    <!-- Header / Toolbar -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#D9D9D9"
-        android:gravity="center_vertical"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/outline_chevron_backward_24"/>
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/outline_account_circle_24"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Arfa Banyu Santoro"
-            android:textStyle="bold"
-            android:layout_marginStart="10dp"/>
-    </LinearLayout>
-
-    <!-- CHAT AREA -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="70dp"
+            android:background="@color/primary"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp">
 
-            <!-- TODAY -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today"
-                android:background="#D9D9D9"
-                android:padding="6dp"
-                android:layout_gravity="center"
-                android:textSize="12sp"/>
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/outline_chevron_backward_24"
+                app:tint="@color/white" />
 
-            <!-- CHAT KIRI -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Udah gue bagikan tugasnya?"
-                android:background="@drawable/bg_chat_left"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivUserAvatar"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/outline_account_circle_24"
+                android:background="@color/white"
+                android:padding="1dp"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
 
-            <!-- CHAT KANAN -->
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Iya udaah"
-                android:background="@drawable/bg_chat_right"
-                android:padding="10dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"/>
+                android:layout_weight="1"
+                android:layout_marginStart="15dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Tinggal bagian lo ajaa"
-                android:background="@drawable/bg_chat_right"
-                android:padding="10dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="6dp"/>
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arfa Banyu"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Jangan lupa dikirim yak nyu"
-                android:background="@drawable/bg_chat_right"
-                android:padding="10dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="6dp"/>
-
-            <!-- CHAT KIRI -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Nanti dikirim yaa, masih dijalan"
-                android:background="@drawable/bg_chat_left"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Online"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.cardview.widget.CardView>
 
-    <!-- INPUT -->
-    <LinearLayout
+    <!-- Chat Messages List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMessages"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#D9D9D9"
-        android:gravity="center_vertical"
-        android:padding="8dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:clipToPadding="false"/>
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/sharp_align_flex_center_24"/>
+    <!-- Bottom Input Bar -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="4dp">
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:hint="Ketik Pesan..."
-            android:background="@null"
-            android:padding="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="10dp"
-            android:src="@android:drawable/ic_btn_speak_now"/>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/sharp_align_flex_center_24"
+                app:tint="@color/text_secondary" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_send"/>
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="10dp"
+                android:background="@android:color/transparent"
+                android:hint="Type a message..."
+                android:textSize="14sp"
+                android:inputType="textCapSentences" />
+
+            <ImageView
+                android:id="@+id/btnSend"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@android:drawable/ic_menu_send"
+                app:tint="@color/primary" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

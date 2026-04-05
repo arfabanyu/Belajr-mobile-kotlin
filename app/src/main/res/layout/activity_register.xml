@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".LoginPage">
+    tools:context=".register_page">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/loginslider"
         android:elevation="10dp"
         android:orientation="vertical"
@@ -33,17 +33,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
             android:fontFamily="@font/righteous"
-            android:text="Login"
+            android:text="Register"
             android:textColor="@color/white"
-            android:textSize="40sp" />
+            android:textSize="36sp" />
 
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/borderradiuslogin"
             android:hint="Username"
             android:inputType="text"
@@ -52,25 +51,28 @@
             android:textColorHint="#9E9E9E" />
 
         <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/borderradiuslogin"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#9E9E9E" />
+
+        <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/borderradiuslogin"
             android:hint="Password"
             android:inputType="textPassword"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
             android:textColorHint="#9E9E9E" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:text="Forgot password?"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
 
         <Button
             android:id="@+id/mainButton"
@@ -79,7 +81,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/btn_primary"
             android:fontFamily="@font/righteous"
-            android:text="Login"
+            android:text="Create Account"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -95,15 +97,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don't have an account? "
+                android:text="Already have an account? "
                 android:textColor="@color/white" />
 
             <TextView
-                android:id="@+id/tvRegister"
+                android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/righteous"
-                android:text="Register"
+                android:text="Login"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
