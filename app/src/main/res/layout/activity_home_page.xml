@@ -10,36 +10,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@drawable/bg_header"
         android:padding="20dp"
-        android:elevation="4dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/outline_chevron_backward_24"
-            app:tint="@color/white" />
+        android:elevation="4dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:fontFamily="@font/righteous"
-            android:text="Friend Requests"
+            android:text="Find Partner"
             android:textColor="@color/white"
-            android:textSize="22sp" />
+            android:textSize="24sp"
+            android:fontFamily="@font/righteous"/>
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/borderradiuslogin"
+            android:hint="Search by interests (e.g. Kotlin, Math)"
+            android:paddingHorizontal="20dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawablePadding="10dp"/>
     </LinearLayout>
 
-    <!-- Request List -->
+    <!-- Partner List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFriendRequests"
+        android:id="@+id/rvPartners"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="10dp"
         android:clipToPadding="false"/>
+
+    <!-- Bottom Navigation -->
+    <include layout="@layout/layout_bottom_nav" />
 
 </LinearLayout>

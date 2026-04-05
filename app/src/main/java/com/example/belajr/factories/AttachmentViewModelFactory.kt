@@ -1,6 +1,9 @@
+package com.example.belajr.factories
+
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import android.content.Context
+import com.example.belajr.views.AttachmentViewModel
 
 class AttachmentViewModelFactory(
     private val context: Context
@@ -11,6 +14,6 @@ class AttachmentViewModelFactory(
             @Suppress("UNCHECKED_CAST")
             return AttachmentViewModel(context.applicationContext) as T
         }
-        error("Unknown ViewModel class")
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

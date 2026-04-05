@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".register_page">
+    tools:context=".RegisterPage">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/loginslider"
         android:elevation="10dp"
         android:orientation="vertical"
@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/righteous"
             android:text="Register"
             android:textColor="@color/white"
@@ -41,7 +42,7 @@
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/borderradiuslogin"
             android:hint="Username"
@@ -53,7 +54,7 @@
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/borderradiuslogin"
             android:hint="Email"
@@ -65,7 +66,7 @@
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/borderradiuslogin"
             android:hint="Password"

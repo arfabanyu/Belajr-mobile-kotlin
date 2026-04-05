@@ -1,10 +1,10 @@
 package com.example.belajr.controllers
 
-import ChatRoom
-import Message
-import PartnerResult
 import com.example.belajr.SupabaseClient
+import com.example.belajr.models.ChatRoom
 import com.example.belajr.models.Friendship
+import com.example.belajr.models.Message
+import com.example.belajr.models.PartnerResult
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.realtime.realtime
 import io.github.jan.supabase.realtime.channel

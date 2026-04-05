@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:padding="4dp"
-            android:src="@drawable/ppplaceholder"
+            android:src="@drawable/outline_account_circle_24"
             android:background="@color/white"
             app:shapeAppearanceOverlay="@style/CircleImageView" />
 
@@ -90,6 +90,7 @@
 
             <!-- Logout Button -->
             <Button
+                android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="30dp"

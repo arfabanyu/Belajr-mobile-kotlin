@@ -12,7 +12,7 @@
         android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,16 +37,16 @@
             android:fontFamily="@font/righteous"
             android:text="Login"
             android:textColor="@color/white"
-            android:textSize="40sp" />
+            android:textSize="36sp" />
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/borderradiuslogin"
-            android:hint="Username"
-            android:inputType="text"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
             android:textColorHint="#9E9E9E" />

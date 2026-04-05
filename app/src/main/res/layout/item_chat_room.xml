@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Friend Avatar -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivFriendAvatar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@drawable/outline_account_circle_24"
+            android:background="@color/bg_light"
+            android:padding="2dp"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+        <!-- Chat Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvFriendName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Friend Name"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLastMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last message content..."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Time & Counter -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:00"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <!-- Contoh Notification Dot (Optional) -->
+            <View
+                android:id="@+id/viewUnread"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/outline_circle_notifications_24"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

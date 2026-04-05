@@ -1,11 +1,11 @@
 package com.example.belajr.controllers
 
-import PartnerResult
-import PartnerWithStatus
-import RelationStatus
 import com.example.belajr.SupabaseClient
 import com.example.belajr.models.FriendRequest
 import com.example.belajr.models.Friendship
+import com.example.belajr.models.PartnerResult
+import com.example.belajr.models.PartnerWithStatus
+import com.example.belajr.models.RelationStatus
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.auth.auth
 
@@ -20,7 +20,7 @@ class MatchRepository {
             val profiles = SupabaseClient.client.postgrest["profiles"]
                 .select {
                     filter {
-                        contains("interests", listOf(keyword))
+                        // contains("interests", listOf(keyword))
                         neq("id", currentUserId)
                     }
                 }

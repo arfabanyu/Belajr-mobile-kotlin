@@ -1,3 +1,5 @@
+package com.example.belajr.views
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.belajr.controllers.AuthRepository

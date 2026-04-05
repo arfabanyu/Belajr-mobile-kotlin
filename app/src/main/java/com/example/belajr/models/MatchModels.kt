@@ -1,3 +1,4 @@
+package com.example.belajr.models
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 

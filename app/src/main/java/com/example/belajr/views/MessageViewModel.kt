@@ -1,7 +1,11 @@
+package com.example.belajr.views
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.belajr.controllers.FriendRepository
 import com.example.belajr.controllers.MessageRepository
+import com.example.belajr.models.ChatRoom
+import com.example.belajr.models.Message
 import io.github.jan.supabase.realtime.PostgresAction
 import io.github.jan.supabase.realtime.RealtimeChannel
 import io.github.jan.supabase.realtime.decodeRecord

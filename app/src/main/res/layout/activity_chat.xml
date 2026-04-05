@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- User Story Item (Repeatable) -->
                 <include layout="@layout/item_story_circle" />
                 <include layout="@layout/item_story_circle" />
                 <include layout="@layout/item_story_circle" />
@@ -68,7 +67,8 @@
             android:background="@drawable/borderradiuslogin"
             android:hint="Search..."
             android:paddingHorizontal="15dp"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
     <!-- Chat List -->
