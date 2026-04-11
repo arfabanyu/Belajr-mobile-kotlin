@@ -20,5 +20,6 @@ enum class RelationStatus {
 
 data class PartnerWithStatus(
     val profile: PartnerResult,
-    val relationStatus: RelationStatus
+    val relationStatus: RelationStatus,
+    val requestId: Long? = null
 )

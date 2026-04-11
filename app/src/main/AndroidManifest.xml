@@ -20,6 +20,9 @@
         <activity android:name=".ChatDetailActivity" android:exported="false" />
         <activity android:name=".ChatActivity" android:exported="false" />
         <activity android:name=".FriendRequestActivity" android:exported="false" />
+        <activity android:name=".OtherProfileActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".EditProfileActivity" android:exported="false" />
         <activity
             android:name=".LoginPage"
             android:exported="true">
@@ -30,7 +33,7 @@
         </activity>
 
         <service
-            android:name=".services.BelaJrMessagingService"
+            android:name=".services.BelajrMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

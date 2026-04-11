@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardSubject"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="4dp"
+    android:layout_margin="6dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#F0F4FF">
 
     <TextView
-        android:id="@+id/tvSubjectName"
+        android:id="@+id/tvInterestName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        android:text="Math"
+        android:text="Interest"
+        android:textColor="@color/primary"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary" />
+        android:textStyle="bold" />
 </androidx.cardview.widget.CardView>

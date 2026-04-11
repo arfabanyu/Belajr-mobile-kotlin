@@ -53,17 +53,18 @@
         </LinearLayout>
 
         <!-- Action Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAction"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:background="@drawable/borderradiuslogin"
-            android:backgroundTint="@color/primary"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:paddingHorizontal="12dp"
             android:text="Connect"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            app:cornerRadius="20dp"
+            app:elevation="0dp"
+            app:rippleColor="#20000000" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

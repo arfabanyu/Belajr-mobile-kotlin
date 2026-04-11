@@ -15,13 +15,26 @@ class MatchRepository {
         SupabaseClient.client.auth.currentUserOrNull()?.id
             ?: error("Belum login")
 
+    suspend fun getAllAvailableInterests(): Result<List<String>> = runCatching {
+        val profiles = SupabaseClient.client.postgrest["profiles"]
+            .select()
+            .decodeList<PartnerResult>()
+        
+        profiles.flatMap { it.interests ?: emptyList() }
+            .filter { it.isNotBlank() }
+            .distinct()
+            .sorted()
+    }
+
     suspend fun searchPartners(keyword: String): Result<List<PartnerWithStatus>> =
         runCatching {
             val profiles = SupabaseClient.client.postgrest["profiles"]
                 .select {
                     filter {
-                        // contains("interests", listOf(keyword))
                         neq("id", currentUserId)
+                        if (keyword.isNotEmpty()) {
+                            contains("interests", listOf(keyword))
+                        }
                     }
                 }
                 .decodeList<PartnerResult>()
@@ -29,6 +42,7 @@ class MatchRepository {
             val requests = SupabaseClient.client.postgrest["friend_requests"]
                 .select {
                     filter {
+                        eq("status", "pending")
                         or {
                             eq("sender_id", currentUserId)
                             eq("receiver_id", currentUserId)
@@ -49,35 +63,22 @@ class MatchRepository {
                 .decodeList<Friendship>()
 
             profiles.map { profile ->
-                val status = determineStatus(
-                    profile.id,
-                    requests,
-                    friendships
-                )
-                PartnerWithStatus(profile, status)
+                // Cari request yang melibatkan user ini
+                val request = requests.firstOrNull { 
+                    it.senderId == profile.id || it.receiverId == profile.id 
+                }
+                
+                val status = when {
+                    friendships.any {
+                        (it.userOneId == profile.id && it.userTwoId == currentUserId) ||
+                        (it.userOneId == currentUserId && it.userTwoId == profile.id)
+                    } -> RelationStatus.FRIEND
+                    request == null -> RelationStatus.NONE
+                    request.senderId == currentUserId -> RelationStatus.PENDING_OUT
+                    else -> RelationStatus.PENDING_IN
+                }
+                
+                PartnerWithStatus(profile, status, request?.id)
             }
         }
-
-    private fun determineStatus(
-        otherUserId: String,
-        requests: List<FriendRequest>,
-        friendships: List<Friendship>
-    ): RelationStatus {
-
-        val isFriend = friendships.any {
-            it.userOneId == otherUserId || it.userTwoId == otherUserId
-        }
-        if (isFriend) return RelationStatus.FRIEND
-
-        val request = requests.firstOrNull {
-            (it.senderId == otherUserId || it.receiverId == otherUserId)
-                    && it.status == "pending"
-        }
-
-        return when {
-            request == null -> RelationStatus.NONE
-            request.senderId == currentUserId -> RelationStatus.PENDING_OUT
-            else -> RelationStatus.PENDING_IN
-        }
-    }
 }

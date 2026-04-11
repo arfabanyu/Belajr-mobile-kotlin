@@ -15,17 +15,26 @@ class FriendRepository {
         SupabaseClient.client.postgrest["friend_requests"].insert(
             FriendRequest(
                 senderId = currentUserId,
-                receiverId = receiverId
+                receiverId = receiverId,
+                status = "pending"
             )
         )
     }
 
-    suspend fun cancelRequest(receiverId: String): Result<Unit> = runCatching {
+    suspend fun cancelRequest(receiverId: String, requestId: Long? = null): Result<Unit> = runCatching {
+        // Supabase Postgrest delete membutuhkan filter yang tepat. 
+        // Pastikan nama kolom di database sesuai (sender_id, receiver_id)
         SupabaseClient.client.postgrest["friend_requests"].delete {
             filter {
-                eq("sender_id", currentUserId)
-                eq("receiver_id", receiverId)
-                eq("status", "pending")
+                if (requestId != null) {
+                    // Hapus berdasarkan ID unik (Paling Ampuh)
+                    eq("id", requestId)
+                } else {
+                    // Fallback jika ID tidak ada
+                    eq("sender_id", currentUserId)
+                    eq("receiver_id", receiverId)
+                    eq("status", "pending")
+                }
             }
         }
     }
@@ -53,9 +62,10 @@ class FriendRepository {
     }
 
     suspend fun acceptRequest(requestId: Long, senderId: String): Result<Unit> = runCatching {
-        // Update status jadi accepted
         SupabaseClient.client.postgrest["friend_requests"]
-            .update({ set("status", "accepted") }) {
+            .update({ 
+                set("status", "accepted") 
+            }) {
                 filter { eq("id", requestId) }
             }
 
@@ -70,7 +80,9 @@ class FriendRepository {
 
     suspend fun rejectRequest(requestId: Long): Result<Unit> = runCatching {
         SupabaseClient.client.postgrest["friend_requests"]
-            .update({ set("status", "rejected") }) {
+            .update({ 
+                set("status", "rejected") 
+            }) {
                 filter { eq("id", requestId) }
             }
     }
@@ -86,6 +98,20 @@ class FriendRepository {
                 }
             }
             .decodeList<Friendship>()
+    }
+
+    suspend fun getFriendCount(userId: String): Result<Int> = runCatching {
+        val result = SupabaseClient.client.postgrest["friendships"]
+            .select {
+                filter {
+                    or {
+                        eq("user_one_id", userId)
+                        eq("user_two_id", userId)
+                    }
+                }
+            }
+            .decodeList<Friendship>()
+        result.size
     }
 
     suspend fun isFriend(otherUserId: String): Boolean {

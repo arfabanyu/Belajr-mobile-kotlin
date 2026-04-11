@@ -11,7 +11,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.example.belajr.R
 
-class BelaJrMessagingService : FirebaseMessagingService() {
+class BelajrMessagingService : FirebaseMessagingService() {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onMessageReceived(message: RemoteMessage) {
