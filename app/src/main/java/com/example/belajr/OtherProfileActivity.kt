@@ -134,7 +134,6 @@ class OtherProfileActivity : AppCompatActivity() {
                     btn.text = "Send Request"
                     btn.isEnabled = true
                     btn.alpha = 1.0f
-                    // Reset ke warna primary
                     mBtnAction?.backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
                     btn.setTextColor(Color.WHITE)
                     mBtnAction?.strokeWidth = 0
@@ -145,7 +144,6 @@ class OtherProfileActivity : AppCompatActivity() {
                     btn.alpha = 1.0f
                     
                     val redColor = Color.parseColor("#FF5252")
-                    // Menggunakan background putih dan outline merah
                     mBtnAction?.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
                     btn.setTextColor(redColor)
                     
@@ -193,7 +191,6 @@ class OtherProfileActivity : AppCompatActivity() {
         }
     }
 
-    // Helper extension to add alpha to Int color
     private fun Int.withAlpha(alpha: Int): Int {
         return (alpha shl 24) or (this and 0x00FFFFFF)
     }

@@ -59,7 +59,6 @@ class MessageViewModel : ViewModel() {
     private val currentUserId get() = SupabaseClient.client.auth.currentUserOrNull()?.id
 
     init {
-        // Trigger initial loads and start listening
         loadChatRooms()
         listenToRooms()
         listenToProfiles()
@@ -69,18 +68,19 @@ class MessageViewModel : ViewModel() {
         chatJob?.cancel()
         
         chatJob = viewModelScope.launch {
-            activeChannel?.let { 
-                it.unsubscribe()
-                SupabaseClient.client.realtime.removeChannel(it)
+            val oldChannel = activeChannel
+            if (oldChannel != null) {
+                try {
+                    oldChannel.unsubscribe()
+                    SupabaseClient.client.realtime.removeChannel(oldChannel)
+                } catch (e: Exception) { }
             }
             activeChannel = null
 
             _isLoading.value = true
             
-            viewModelScope.launch {
-                repo.getFriendProfile(otherUserId).onSuccess {
-                    _activeFriend.value = it
-                }
+            repo.getFriendProfile(otherUserId).onSuccess {
+                _activeFriend.value = it
             }
 
             repo.getMessages(otherUserId)
@@ -244,12 +244,10 @@ class MessageViewModel : ViewModel() {
                         try {
                             val newMessage = action.decodeRecord<Message>()
                             if (newMessage.receiverId == currentUserId) {
-                                Log.d("MessageViewModel", "New message detected for current user, refreshing chat list")
                                 loadChatRooms() 
                             }
                         } catch (e: Exception) {
-                            Log.e("MessageViewModel", "Error decoding global message: ${e.message}")
-                            loadChatRooms() // fallback refresh
+                            loadChatRooms() 
                         }
                     }.launchIn(viewModelScope)
                 
@@ -258,9 +256,7 @@ class MessageViewModel : ViewModel() {
                         loadChatRooms() 
                     }.launchIn(viewModelScope)
                 
-                channel.subscribe { status ->
-                    Log.d("MessageViewModel", "Global Rooms Status: $status")
-                }
+                channel.subscribe()
             } catch (e: Exception) { Log.e("MessageViewModel", "Rooms Update Error: ${e.message}") }
         }
     }
@@ -294,9 +290,12 @@ class MessageViewModel : ViewModel() {
 
     fun closeChat() {
         viewModelScope.launch {
-            activeChannel?.let { 
-                it.unsubscribe()
-                SupabaseClient.client.realtime.removeChannel(it)
+            val channel = activeChannel
+            if (channel != null) {
+                try {
+                    channel.unsubscribe()
+                    SupabaseClient.client.realtime.removeChannel(channel)
+                } catch (e: Exception) { }
             }
             activeChannel = null
             _activeFriend.value = null
@@ -305,11 +304,21 @@ class MessageViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        roomsChannel?.let { 
-            SupabaseClient.client.realtime.removeChannel(it)
+        val rChannel = roomsChannel
+        if (rChannel != null) {
+            viewModelScope.launch {
+                try {
+                    SupabaseClient.client.realtime.removeChannel(rChannel)
+                } catch (e: Exception) { }
+            }
         }
-        profilesChannel?.let {
-            SupabaseClient.client.realtime.removeChannel(it)
+        val pChannel = profilesChannel
+        if (pChannel != null) {
+            viewModelScope.launch {
+                try {
+                    SupabaseClient.client.realtime.removeChannel(pChannel)
+                } catch (e: Exception) { }
+            }
         }
         closeChat()
     }

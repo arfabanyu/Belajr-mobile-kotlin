@@ -41,7 +41,6 @@ class ProfileActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         matchViewModel = ViewModelProvider(this)[MatchViewModel::class.java]
         
-        // Setup Bottom Navigation
         NavigationUtils.setupBottomNavigation(this, R.id.nav_profile)
 
         setupViews()
@@ -50,7 +49,6 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Load or refresh profile data every time the activity becomes visible
         authViewModel.loadProfile()
     }
 
@@ -66,13 +64,11 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        // Observe Auth State for Logout
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.authState.collect { state ->
                     when (state) {
                         is AuthState.LoggedOut -> {
-                            // After logout, go to Login Page
                             val intent = Intent(this@ProfileActivity, LoginPage::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -87,7 +83,6 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
-        // Observe Profile Data
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.profile.collect { profile ->
@@ -105,14 +100,12 @@ class ProfileActivity : AppCompatActivity() {
                         
                         setupInterestsChips(profile.interests ?: emptyList())
                         
-                        // Load friend count for this user
                         matchViewModel.loadFriendCount(profile.id)
                     }
                 }
             }
         }
 
-        // Observe Friend Count
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 matchViewModel.friendCount.collect { count ->

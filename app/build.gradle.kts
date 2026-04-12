@@ -71,7 +71,6 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.process)
     
-    // Supabase
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.postgrest)
     implementation(libs.supabase.auth)
@@ -85,10 +84,8 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation("com.google.firebase:firebase-analytics")
 
-    // Glide
     implementation(libs.glide)
 
-    // test
     testImplementation(libs.junit)
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     androidTestImplementation(libs.androidx.junit)

@@ -42,7 +42,7 @@ class RegisterPage : AppCompatActivity() {
         val tvLogin = findViewById<TextView>(R.id.tvLogin)
 
         tvLogin.setOnClickListener {
-            finish() // Kembali ke LoginPage
+            finish() 
         }
 
         registerButton.setOnClickListener {
@@ -70,8 +70,8 @@ class RegisterPage : AppCompatActivity() {
                             findViewById<Button>(R.id.mainButton).text = "Creating Account..."
                         }
                         is AuthState.Success -> {
-                            Toast.makeText(this@RegisterPage, "Registrasi Berhasil! Silakan Login.", Toast.LENGTH_SHORT).show()
-                            finish() // Kembali ke login
+                            Toast.makeText(this@RegisterPage, "Registrasi Berhasil!", Toast.LENGTH_SHORT).show()
+                            finish() 
                         }
                         is AuthState.Error -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true

@@ -28,7 +28,6 @@ class MatchRepository {
 
     suspend fun searchPartners(keyword: String): Result<List<PartnerWithStatus>> =
         runCatching {
-            // 1. Ambil SEMUA profil (kecuali diri sendiri)
             val allProfiles = SupabaseClient.client.postgrest["profiles"]
                 .select {
                     filter {
@@ -37,7 +36,6 @@ class MatchRepository {
                 }
                 .decodeList<PartnerResult>()
 
-            // 2. Filter di sisi Client agar Case-Insensitive aman dan akurat
             val filteredProfiles = if (keyword.isEmpty()) {
                 allProfiles
             } else {
@@ -47,7 +45,6 @@ class MatchRepository {
                 }
             }
 
-            // 3. Ambil data pendukung (requests & friendships)
             val requests = SupabaseClient.client.postgrest["friend_requests"]
                 .select {
                     filter {
@@ -71,7 +68,6 @@ class MatchRepository {
                 }
                 .decodeList<Friendship>()
 
-            // 4. Map ke PartnerWithStatus
             filteredProfiles.map { profile ->
                 val request = requests.firstOrNull { 
                     it.senderId == profile.id || it.receiverId == profile.id 

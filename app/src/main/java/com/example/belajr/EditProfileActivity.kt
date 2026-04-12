@@ -44,43 +44,34 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private val allSubjects = listOf(
-        // Umum SMA/MA
         "Matematika", "Bahasa Indonesia", "Bahasa Inggris", "Fisika", "Kimia", "Biologi",
         "Ekonomi", "Geografi", "Sosiologi", "Sejarah", "Informatika", "Seni Budaya",
         "PJOK", "PAI", "PKN", "Antropologi", "Bahasa Arab", "Bahasa Mandarin", "Bahasa Jepang",
         
-        // SMK - Teknologi Informasi & Komunikasi
         "Rekayasa Perangkat Lunak (RPL)", "Teknik Komputer Jaringan (TKJ)", "Multimedia", 
         "Sistem Informatika, Jaringan & Aplikasi (SIJA)", "Cyber Security", "Animasi",
         "Desain Komunikasi Visual (DKV)", "Produksi Film & Televisi",
         
-        // SMK - Teknik Mesin & Otomotif
         "Teknik Kendaraan Ringan (TKR)", "Teknik Sepeda Motor (TSM)", "Teknik Alat Berat",
         "Teknik Pemesinan (TP)", "Teknik Pengelasan (Las)", "Teknik Mekatronika",
         "Teknik Audio Video (TAV)", "Teknik Pesawat Udara", "Teknik Konstruksi Kapal",
         
-        // SMK - Kelistrikan & Energi
         "Teknik Instalasi Tenaga Listrik (TITL)", "Teknik Otomasi Industri", 
         "Teknik Pendingin & Tata Udara", "Teknik Energi Terbarukan",
         
-        // SMK - Bangunan & Geospasial
         "Bisnis Konstruksi & Properti (BKP)", "Desain Pemodelan & Informasi Bangunan (DPIB)",
         "Teknik Geomatika (Surveyor)", "Geologi Pertambangan",
         
-        // SMK - Bisnis & Manajemen
         "Akuntansi & Keuangan Lembaga", "Otomatisasi & Tata Kelola Perkantoran", 
         "Bisnis Daring & Pemasaran", "Perbankan Syariah", "Logistik",
         
-        // SMK - Pariwisata & Seni
         "Kuliner / Tata Boga", "Tata Busana (Fashion Design)", "Perhotelan", 
         "Wisata & Perjalanan", "Kecantikan & Tata Rias", "Kriya Kreatif Batik",
         "Kriya Kreatif Keramik", "Kriya Kreatif Logam",
         
-        // SMK - Kesehatan & Sosial
         "Asisten Keperawatan", "Farmasi Klinis & Komunitas", "Farmasi Industri",
         "Dental Asisten", "Teknologi Laboratorium Medik", "Pekerjaan Sosial",
         
-        // SMK - Agribisnis & Kemaritiman
         "Agribisnis Tanaman Pangan & Hortikultura", "Agribisnis Ternak Unggas",
         "Teknologi Hasil Pertanian", "Perhutanan", "Nautika Kapal Niaga", 
         "Teknika Kapal Penangkap Ikan", "Budidaya Perikanan"
@@ -148,7 +139,6 @@ class EditProfileActivity : AppCompatActivity() {
                     val fileName = "avatar_${System.currentTimeMillis()}.jpg"
                     authViewModel.uploadAvatar(bytes, fileName).onSuccess { newUrl ->
                         avatarUrl = newUrl
-                        // Delete old avatar from storage if exists
                         oldAvatarUrl?.let { url ->
                             if (url.isNotEmpty() && url.contains("/")) {
                                 val oldFileName = url.substringAfterLast("/")

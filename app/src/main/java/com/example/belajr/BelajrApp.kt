@@ -21,7 +21,6 @@ class BelajrApp : Application() {
     override fun onCreate() {
         super.onCreate()
         
-        // Global Realtime Connection
         applicationScope.launch {
             try {
                 SupabaseClient.client.realtime.connect()
@@ -37,7 +36,7 @@ class BelajrApp : Application() {
                 applicationScope.launch { 
                     try {
                         SupabaseClient.client.realtime.connect()
-                    } catch (e: Exception) { /* Silent */ }
+                    } catch (e: Exception) { }
                 }
             }
 

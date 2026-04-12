@@ -36,7 +36,6 @@ class ChatDetailActivity : AppCompatActivity() {
     private lateinit var tvOnlineStatus: TextView
     private lateinit var ivUserAvatar: ImageView
     
-    // Preview Components
     private lateinit var cvPreviewContainer: CardView
     private lateinit var ivPreview: ImageView
     private lateinit var btnCancelPreview: ImageView
@@ -86,7 +85,6 @@ class ChatDetailActivity : AppCompatActivity() {
         viewModel.loadChatRooms()
         viewModel.openChat(receiverId!!)
         
-        // Tandai pesan sebagai sudah dibaca saat membuka chat
         viewModel.markAsRead(receiverId!!)
     }
 
@@ -101,7 +99,6 @@ class ChatDetailActivity : AppCompatActivity() {
         btnSend = findViewById(R.id.btnSend)
         btnAttach = findViewById(R.id.btnAttach)
         
-        // Preview Setup
         cvPreviewContainer = findViewById(R.id.cvPreviewContainer)
         ivPreview = findViewById(R.id.ivPreview)
         btnCancelPreview = findViewById(R.id.btnCancelPreview)
@@ -155,7 +152,6 @@ class ChatDetailActivity : AppCompatActivity() {
                     chatAdapter.updateMessages(messages)
                     if (messages.isNotEmpty()) {
                         rvMessages.smoothScrollToPosition(messages.size - 1)
-                        // Jika ada pesan baru saat chat terbuka, tandai sebagai dibaca
                         viewModel.markAsRead(receiverId!!)
                     }
                 }

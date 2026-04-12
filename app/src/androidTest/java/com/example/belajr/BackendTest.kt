@@ -30,10 +30,6 @@ class BackendTest {
     private val testUsername2 = "testuser2"
     private val testUsername3 = "testuser3"
 
-    // ============================================
-    // AUTH TESTS
-    // ============================================
-
     @Test
     fun test01_register_user1() {
         runBlocking {
@@ -108,10 +104,6 @@ class BackendTest {
         }
     }
 
-    // ============================================
-    // NOTIFICATION TESTS
-    // ============================================
-
     @Test
     fun test07_register_fcm_token() {
         runBlocking {
@@ -136,10 +128,6 @@ class BackendTest {
             authRepo.logout()
         }
     }
-
-    // ============================================
-    // MATCH TESTS
-    // ============================================
 
     @Test
     fun test08_search_partner() {
@@ -198,10 +186,6 @@ class BackendTest {
             authRepo.logout()
         }
     }
-
-    // ============================================
-    // FRIEND REQUEST TESTS
-    // ============================================
 
     @Test
     fun test09_send_friend_request() {
@@ -358,10 +342,6 @@ class BackendTest {
         }
     }
 
-    // ============================================
-    // MESSAGE TESTS
-    // ============================================
-
     @Test
     fun test14_send_message() {
         runBlocking {
@@ -453,10 +433,6 @@ class BackendTest {
             authRepo.logout()
         }
     }
-
-    // ============================================
-    // LOGOUT TESTS
-    // ============================================
 
     @Test
     fun test17_logout() {

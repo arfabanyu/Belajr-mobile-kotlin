@@ -37,8 +37,6 @@ class FriendRepository {
     }
 
     suspend fun getIncomingRequests(): Result<List<FriendRequest>> = runCatching {
-        // Melakukan join ke tabel profiles untuk mengambil info pengirim
-        // Menggunakan profiles!sender_id untuk menentukan relasi yang spesifik
         SupabaseClient.client.postgrest["friend_requests"]
             .select(Columns.raw("*, sender:profiles!sender_id(id, username, avatar_url)")) {
                 filter {

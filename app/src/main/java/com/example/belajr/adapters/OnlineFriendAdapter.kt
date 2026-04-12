@@ -32,7 +32,6 @@ class OnlineFriendAdapter(
         val friend = friends[position]
         holder.tvName.text = friend.username
         
-        // Load Avatar with fallback to default_profile
         Glide.with(holder.itemView.context)
             .load(friend.avatarUrl)
             .placeholder(R.drawable.default_profile)
@@ -40,7 +39,6 @@ class OnlineFriendAdapter(
             .centerCrop()
             .into(holder.ivAvatar)
 
-        // Status Online Dinamis: Hijau jika true, Abu-abu jika false
         if (friend.isOnline) {
             holder.viewStatus.setBackgroundResource(R.drawable.bg_online_dot)
         } else {

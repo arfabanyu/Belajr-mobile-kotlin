@@ -24,7 +24,6 @@ class LoginPage : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Install Splash Screen sebelum super.onCreate()
         installSplashScreen()
         
         super.onCreate(savedInstanceState)
@@ -61,7 +60,6 @@ class LoginPage : AppCompatActivity() {
 
         observeAuthState()
         
-        // Cek apakah user sudah login sebelumnya
         authViewModel.checkSession()
     }
 
@@ -75,7 +73,6 @@ class LoginPage : AppCompatActivity() {
                             findViewById<Button>(R.id.mainButton).text = "Loading..."
                         }
                         is AuthState.Success -> {
-                            // Cek apakah context masih valid sebelum pindah halaman
                             if (!isFinishing) {
                                 startActivity(Intent(this@LoginPage, HomePage::class.java))
                                 finish()

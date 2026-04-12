@@ -140,7 +140,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        // Chat list and online friends
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.chatRooms.collect { rooms ->
@@ -156,7 +155,6 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-        // Current user profile for header
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.profile.collect { profile ->

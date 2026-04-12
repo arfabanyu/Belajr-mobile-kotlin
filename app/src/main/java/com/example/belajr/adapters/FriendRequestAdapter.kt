@@ -32,10 +32,8 @@ class FriendRequestAdapter(
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val request = requests[position]
         
-        // Tampilkan username asli dari objek sender (hasil join)
         holder.tvSenderName.text = request.sender?.username ?: "User ${request.senderId.take(5)}"
 
-        // Tampilkan avatar jika ada
         val avatarUrl = request.sender?.avatarUrl
         if (!avatarUrl.isNullOrEmpty()) {
             Glide.with(holder.itemView.context)

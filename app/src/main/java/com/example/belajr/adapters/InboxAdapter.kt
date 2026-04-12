@@ -41,14 +41,12 @@ class InboxAdapter(
         holder.tvFriendName.text = room.friend.username
         holder.tvLastMessage.text = room.lastMessage?.content ?: "No messages yet"
         
-        // Logika Unread Dot: Tampilkan jika ada pesan terakhir, pengirimnya bukan saya, dan isRead = false
         val isUnread = room.lastMessage != null && 
                        room.lastMessage.senderId != currentUserId && 
                        !room.lastMessage.isRead
         
         holder.dotUnread.visibility = if (isUnread) View.VISIBLE else View.GONE
 
-        // Load Avatar
         Glide.with(holder.itemView.context)
             .load(room.friend.avatarUrl)
             .placeholder(R.drawable.default_profile)
@@ -56,7 +54,6 @@ class InboxAdapter(
             .circleCrop()
             .into(holder.ivFriendAvatar)
 
-        // Format waktu
         val sentAt = room.lastMessage?.sentAt
         if (sentAt != null) {
             try {

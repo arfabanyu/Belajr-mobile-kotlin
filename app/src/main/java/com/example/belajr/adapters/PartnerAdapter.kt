@@ -39,7 +39,6 @@ class PartnerAdapter(
         holder.tvUsername.text = item.profile.username
         holder.tvInterests.text = "Interests: ${item.profile.interests?.joinToString(", ") ?: "None"}"
 
-        // Load Avatar with fallback to default_profile
         if (!item.profile.avatarUrl.isNullOrEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(item.profile.avatarUrl)

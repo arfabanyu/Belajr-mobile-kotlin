@@ -60,7 +60,6 @@ class FriendViewModel : ViewModel() {
                     try {
                         val req = action.decodeRecord<FriendRequest>()
                         if (req.receiverId == currentUserId) {
-                            Log.d("FriendViewModel", "New friend request for me!")
                             loadIncomingRequests() 
                         }
                     } catch (e: Exception) {
@@ -76,9 +75,7 @@ class FriendViewModel : ViewModel() {
                     table = "friend_requests" 
                 }.onEach { loadIncomingRequests() }.launchIn(viewModelScope)
                 
-                channel.subscribe { status ->
-                    Log.d("FriendViewModel", "Requests Channel Status: $status")
-                }
+                channel.subscribe()
             } catch (e: Exception) {
                 Log.e("FriendViewModel", "Realtime Requests Error: ${e.message}")
             }
@@ -128,14 +125,11 @@ class FriendViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        requestsChannel?.let {
-            val channel = it
+        requestsChannel?.let { channel ->
             viewModelScope.launch {
                 try {
                     SupabaseClient.client.realtime.removeChannel(channel)
-                } catch (e: Exception) {
-                    Log.e("FriendViewModel", "Error removing channel: ${e.message}")
-                }
+                } catch (e: Exception) { }
             }
         }
         requestsChannel = null
