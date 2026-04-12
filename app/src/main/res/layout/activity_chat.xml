@@ -8,7 +8,7 @@
     android:background="@color/primary"
     android:orientation="vertical">
 
-    <!-- Bagian Header (Massege & Online Friends) -->
+    <!-- Bagian Header (Message & Online Friends) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:fontFamily="sans-serif-black"
-            android:text="Massege"
+            android:text="Message"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -36,7 +36,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_story_circle" />
 
-        <!-- Dot Indicators (Sekarang Dinamis) -->
+        <!-- Dot Indicators -->
         <LinearLayout
             android:id="@+id/llIndicators"
             android:layout_width="wrap_content"
@@ -47,53 +47,6 @@
             android:orientation="horizontal" />
     </LinearLayout>
 
-    <!-- Bagian Your Friends & Search -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:paddingHorizontal="24dp">
-
-        <TextView
-            android:id="@+id/tvYourFriends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:fontFamily="sans-serif-black"
-            android:text="Your friends"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:id="@+id/searchBar"
-            android:layout_width="160dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/bg_search_bar"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="12dp">
-
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="Search..."
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:textSize="13sp" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="@color/black" />
-        </LinearLayout>
-    </RelativeLayout>
-
     <!-- Chat List (Area Kartu Putih) -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,6 +55,52 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:id="@+id/tvYourFriends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-black"
+                android:text="Your friends"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:id="@+id/searchBar"
+                android:layout_width="160dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_search_bar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Search..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="@color/black" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -117,6 +116,31 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 tools:listitem="@layout/item_chat_room" />
+
+            <!-- Tampilan Tidak Ada Chat -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyChats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/app_icon_transparent"
+                    android:alpha="0.5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="No chats yet"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
         </FrameLayout>
 

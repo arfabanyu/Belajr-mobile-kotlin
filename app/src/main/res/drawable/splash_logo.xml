@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background putih atau sesuaikan dengan keinginan -->
+    <item android:drawable="@android:color/white" />
+
+    <!-- Gambar img.png ditaruh di tengah tanpa stretch -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/img" />
+    </item>
+</layer-list>

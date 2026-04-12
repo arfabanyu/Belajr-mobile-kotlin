@@ -19,7 +19,7 @@
             android:id="@+id/ivUserAvatar"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:src="@drawable/outline_account_circle_24"
+            android:src="@drawable/default_profile"
             app:shapeAppearanceOverlay="@style/CircleImageView" />
 
         <LinearLayout

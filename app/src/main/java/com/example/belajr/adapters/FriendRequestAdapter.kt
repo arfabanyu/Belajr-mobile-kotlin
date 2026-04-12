@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.belajr.R
 import com.example.belajr.models.FriendRequest
 
@@ -17,6 +18,7 @@ class FriendRequestAdapter(
 
     class RequestViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvSenderName: TextView = view.findViewById(R.id.tvSenderName)
+        val ivSenderAvatar: ImageView = view.findViewById(R.id.ivSenderAvatar)
         val btnAccept: ImageView = view.findViewById(R.id.btnAccept)
         val btnReject: ImageView = view.findViewById(R.id.btnReject)
     }
@@ -29,9 +31,21 @@ class FriendRequestAdapter(
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val request = requests[position]
-        // Catatan: Karena senderId adalah UUID, idealnya Anda mengambil nama dari tabel profiles
-        // Untuk sementara kita tampilkan ID atau placeholder
-        holder.tvSenderName.text = "User ${request.senderId.take(5)}..."
+        
+        // Tampilkan username asli dari objek sender (hasil join)
+        holder.tvSenderName.text = request.sender?.username ?: "User ${request.senderId.take(5)}"
+
+        // Tampilkan avatar jika ada
+        val avatarUrl = request.sender?.avatarUrl
+        if (!avatarUrl.isNullOrEmpty()) {
+            Glide.with(holder.itemView.context)
+                .load(avatarUrl)
+                .placeholder(R.drawable.default_profile)
+                .circleCrop()
+                .into(holder.ivSenderAvatar)
+        } else {
+            holder.ivSenderAvatar.setImageResource(R.drawable.default_profile)
+        }
 
         holder.btnAccept.setOnClickListener { onAccept(request) }
         holder.btnReject.setOnClickListener { onReject(request) }

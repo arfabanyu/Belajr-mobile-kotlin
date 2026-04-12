@@ -33,6 +33,7 @@ class ChatDetailActivity : AppCompatActivity() {
     private lateinit var btnSend: ImageView
     private lateinit var btnAttach: ImageView
     private lateinit var tvOnlineStatus: TextView
+    private lateinit var ivUserAvatar: ImageView
     
     // Preview Components
     private lateinit var cvPreviewContainer: CardView
@@ -88,6 +89,7 @@ class ChatDetailActivity : AppCompatActivity() {
     private fun setupViews() {
         findViewById<TextView>(R.id.tvUserName).text = receiverName ?: "Chat"
         tvOnlineStatus = findViewById(R.id.tvOnlineStatus)
+        ivUserAvatar = findViewById(R.id.ivUserAvatar)
         findViewById<ImageView>(R.id.ivBack).setOnClickListener { finish() }
         
         rvMessages = findViewById(R.id.rvMessages)
@@ -162,6 +164,14 @@ class ChatDetailActivity : AppCompatActivity() {
                         tvOnlineStatus.setTextColor(
                             if (friend.isOnline) android.graphics.Color.GREEN else android.graphics.Color.LTGRAY
                         )
+                        
+                        // Load and update avatar in header
+                        Glide.with(this@ChatDetailActivity)
+                            .load(friend.avatarUrl)
+                            .placeholder(R.drawable.default_profile)
+                            .error(R.drawable.default_profile)
+                            .circleCrop()
+                            .into(ivUserAvatar)
                     }
                 }
             }

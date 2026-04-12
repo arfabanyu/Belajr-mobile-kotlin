@@ -5,6 +5,7 @@ import com.example.belajr.models.Friendship
 import com.example.belajr.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.query.Columns
 
 class FriendRepository {
 
@@ -22,15 +23,11 @@ class FriendRepository {
     }
 
     suspend fun cancelRequest(receiverId: String, requestId: Long? = null): Result<Unit> = runCatching {
-        // Supabase Postgrest delete membutuhkan filter yang tepat. 
-        // Pastikan nama kolom di database sesuai (sender_id, receiver_id)
         SupabaseClient.client.postgrest["friend_requests"].delete {
             filter {
                 if (requestId != null) {
-                    // Hapus berdasarkan ID unik (Paling Ampuh)
                     eq("id", requestId)
                 } else {
-                    // Fallback jika ID tidak ada
                     eq("sender_id", currentUserId)
                     eq("receiver_id", receiverId)
                     eq("status", "pending")
@@ -40,8 +37,10 @@ class FriendRepository {
     }
 
     suspend fun getIncomingRequests(): Result<List<FriendRequest>> = runCatching {
+        // Melakukan join ke tabel profiles untuk mengambil info pengirim
+        // Menggunakan profiles!sender_id untuk menentukan relasi yang spesifik
         SupabaseClient.client.postgrest["friend_requests"]
-            .select {
+            .select(Columns.raw("*, sender:profiles!sender_id(id, username, avatar_url)")) {
                 filter {
                     eq("receiver_id", currentUserId)
                     eq("status", "pending")
@@ -69,7 +68,6 @@ class FriendRepository {
                 filter { eq("id", requestId) }
             }
 
-        // Insert ke tabel friendships
         SupabaseClient.client.postgrest["friendships"].insert(
             Friendship(
                 userOneId = senderId,

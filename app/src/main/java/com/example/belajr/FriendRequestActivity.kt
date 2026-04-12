@@ -1,42 +1,74 @@
 package com.example.belajr
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.belajr.adapters.FriendRequestAdapter
+import com.example.belajr.views.AuthViewModel
 import com.example.belajr.views.FriendViewModel
 import kotlinx.coroutines.launch
 
 class FriendRequestActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: FriendViewModel
+    private lateinit var friendViewModel: FriendViewModel
+    private lateinit var authViewModel: AuthViewModel
     private lateinit var adapter: FriendRequestAdapter
     private lateinit var rvRequests: RecyclerView
+    private lateinit var layoutEmpty: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_friend_request)
 
-        viewModel = ViewModelProvider(this)[FriendViewModel::class.java]
+        layoutEmpty = findViewById(R.id.layoutEmpty)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        friendViewModel = ViewModelProvider(this)[FriendViewModel::class.java]
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         setupRecyclerView()
-        setupViews()
+        setupProfileHeader()
+        
+        NavigationUtils.setupBottomNavigation(this, R.id.nav_notifications)
+
         observeRequests()
 
-        viewModel.loadIncomingRequests()
+        friendViewModel.loadIncomingRequests()
+        authViewModel.loadProfile()
     }
 
-    private fun setupViews() {
-        findViewById<ImageView>(R.id.ivBack).setOnClickListener { finish() }
+    private fun setupProfileHeader() {
+        val ivProfile = findViewById<ImageView>(R.id.ivProfile)
+        lifecycleScope.launch {
+            authViewModel.profile.collect { profile ->
+                if (profile?.avatarUrl != null) {
+                    Glide.with(this@FriendRequestActivity)
+                        .load(profile.avatarUrl)
+                        .placeholder(R.drawable.default_profile)
+                        .circleCrop()
+                        .into(ivProfile)
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -44,11 +76,11 @@ class FriendRequestActivity : AppCompatActivity() {
         adapter = FriendRequestAdapter(
             emptyList(),
             onAccept = { request ->
-                viewModel.acceptRequest(request.id!!, request.senderId)
+                friendViewModel.acceptRequest(request.id!!, request.senderId)
                 Toast.makeText(this, "Friend request accepted!", Toast.LENGTH_SHORT).show()
             },
             onReject = { request ->
-                viewModel.rejectRequest(request.id!!)
+                friendViewModel.rejectRequest(request.id!!)
                 Toast.makeText(this, "Request rejected", Toast.LENGTH_SHORT).show()
             }
         )
@@ -59,14 +91,21 @@ class FriendRequestActivity : AppCompatActivity() {
     private fun observeRequests() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.incomingRequests.collect { requests ->
+                friendViewModel.incomingRequests.collect { requests ->
                     adapter.updateData(requests)
+                    if (requests.isEmpty()) {
+                        layoutEmpty.visibility = View.VISIBLE
+                        rvRequests.visibility = View.GONE
+                    } else {
+                        layoutEmpty.visibility = View.GONE
+                        rvRequests.visibility = View.VISIBLE
+                    }
                 }
             }
         }
 
         lifecycleScope.launch {
-            viewModel.error.collect { error ->
+            friendViewModel.error.collect { error ->
                 if (error != null) {
                     Toast.makeText(this@FriendRequestActivity, error, Toast.LENGTH_SHORT).show()
                 }

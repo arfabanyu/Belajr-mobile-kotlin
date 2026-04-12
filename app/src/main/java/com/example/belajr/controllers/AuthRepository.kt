@@ -6,6 +6,7 @@ import com.example.belajr.models.Profile
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.storage.storage
 
 class AuthRepository {
 
@@ -59,6 +60,18 @@ class AuthRepository {
 
         SupabaseClient.client.postgrest["profiles"]
             .update(data) { filter { eq("id", userId) } }
+    }
+
+    suspend fun uploadAvatar(byteArray: ByteArray, fileName: String): Result<String> = runCatching {
+        val bucket = SupabaseClient.client.storage.from("avatars")
+        bucket.upload(fileName, byteArray) {
+            upsert = true
+        }
+        bucket.publicUrl(fileName)
+    }
+
+    suspend fun deleteAvatar(fileName: String): Result<Unit> = runCatching {
+        SupabaseClient.client.storage.from("avatars").delete(fileName)
     }
 
     fun isLoggedIn(): Boolean {

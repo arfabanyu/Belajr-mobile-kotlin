@@ -6,7 +6,8 @@ import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
 import io.github.jan.supabase.storage.Storage
 import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.HttpTimeout
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.SettingsSessionManager
 import java.util.concurrent.TimeUnit
 
 object SupabaseClient {
@@ -14,7 +15,9 @@ object SupabaseClient {
         supabaseUrl = "https://eerydjnbbmkgipmrjggn.supabase.co",
         supabaseKey = "sb_publishable_je7ZuZ0cmuffR41rG1_WPA_dmegyN51"
     ) {
-        install(Auth)
+        install(Auth) {
+            sessionManager = SettingsSessionManager()
+        }
         install(Postgrest)
         install(Realtime)
         install(Storage)

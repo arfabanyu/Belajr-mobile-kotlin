@@ -10,18 +10,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
         <ImageView
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:src="@drawable/img"
+            android:scaleType="fitStart" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfile"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_launcher_foreground" />
-        <ImageView
-            android:id="@+id/ivProfile"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/outline_account_circle_24"
-            app:tint="@color/text_secondary" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/default_profile"
+            android:background="@color/white"
+            android:padding="1dp"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -91,7 +97,7 @@
                         android:layout_height="70dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_launcher_foreground" />
+                        android:src="@drawable/app_icon_transparent" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -105,13 +111,74 @@
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPartners"
+            <!-- Search Bar -->
+            <LinearLayout
+                android:id="@+id/searchBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="12dp"
-                android:nestedScrollingEnabled="false"
-                android:paddingHorizontal="16dp" />
+                android:background="@drawable/bg_search_bar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Search by name or interests..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="@color/black" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPartners"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="16dp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutEmptyPartners"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="40dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/app_icon_transparent"
+                        android:alpha="0.5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="No partners found"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

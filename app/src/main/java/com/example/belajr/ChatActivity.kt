@@ -34,6 +34,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var rvOnlineFriends: RecyclerView
     private lateinit var etSearch: EditText
     private lateinit var llIndicators: LinearLayout
+    private lateinit var layoutEmptyChats: LinearLayout
     
     private var allChatRooms: List<ChatRoom> = emptyList()
 
@@ -41,6 +42,8 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_chat)
+
+        layoutEmptyChats = findViewById(R.id.layoutEmptyChats)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -82,6 +85,17 @@ class ChatActivity : AppCompatActivity() {
             }
         }
         inboxAdapter.updateData(filtered)
+        updateEmptyState(filtered.isEmpty())
+    }
+
+    private fun updateEmptyState(isEmpty: Boolean) {
+        if (isEmpty) {
+            layoutEmptyChats.visibility = View.VISIBLE
+            rvChatList.visibility = View.GONE
+        } else {
+            layoutEmptyChats.visibility = View.GONE
+            rvChatList.visibility = View.VISIBLE
+        }
     }
 
     private fun setupRecyclerViews() {
@@ -95,15 +109,12 @@ class ChatActivity : AppCompatActivity() {
         rvChatList.layoutManager = LinearLayoutManager(this)
         rvChatList.adapter = inboxAdapter
 
-        // Bagian Teman Online (Carousel)
         onlineAdapter = OnlineFriendAdapter(emptyList()) { friend ->
-            // Ketika diklik, masuk ke OtherProfileActivity
             val intent = Intent(this, OtherProfileActivity::class.java).apply {
                 putExtra("USER_ID", friend.id)
                 putExtra("USERNAME", friend.username)
                 putExtra("BIO", friend.learningStatus)
                 putExtra("INTERESTS", friend.interests?.joinToString(", "))
-                // Karena mereka teman chat, asumsikan statusnya FRIEND
                 putExtra("RELATION_STATUS", RelationStatus.FRIEND.name)
             }
             startActivity(intent)
@@ -118,6 +129,7 @@ class ChatActivity : AppCompatActivity() {
                 viewModel.chatRooms.collect { rooms ->
                     allChatRooms = rooms
                     inboxAdapter.updateData(rooms)
+                    updateEmptyState(rooms.isEmpty())
                     
                     val onlineFriends = rooms.map { it.friend }
                     onlineAdapter.updateData(onlineFriends)

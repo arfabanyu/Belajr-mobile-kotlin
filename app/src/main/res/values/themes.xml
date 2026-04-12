@@ -8,6 +8,19 @@
         <item name="android:statusBarColor">@color/primary_dark</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Background Splash Screen -->
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+
+        <!-- Hilangkan ikon bulat standar Android 12 -->
+        <item name="windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+
+        <!-- Paksa gunakan background kustom yang berisi gambar asli -->
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.BelaJR</item>
+    </style>
+
     <style name="CircleImageView" parent="">
         <item name="cornerSize">50%</item>
     </style>

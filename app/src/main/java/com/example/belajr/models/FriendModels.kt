@@ -6,11 +6,13 @@ import kotlinx.serialization.SerialName
 @Serializable
 data class Profile(
     val id: String,
-    val email: String,
-    val username: String,
+    val email: String? = null,
+    val username: String? = null,
     val interests: List<String>? = null,
     @SerialName("learning_status")
-    val learningStatus: String? = null
+    val learningStatus: String? = null,
+    @SerialName("avatar_url")
+    val avatarUrl: String? = null
 )
 
 @Serializable
@@ -22,7 +24,9 @@ data class FriendRequest(
     val receiverId: String,
     val status: String = "pending",
     @SerialName("created_at")
-    val createdAt: String? = null
+    val createdAt: String? = null,
+    // Tambahkan ini untuk menampung data join dari profiles
+    val sender: Profile? = null
 )
 
 @Serializable

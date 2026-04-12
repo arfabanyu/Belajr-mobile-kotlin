@@ -3,8 +3,10 @@ package com.example.belajr.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.belajr.R
 import com.example.belajr.models.ChatRoom
 import java.text.SimpleDateFormat
@@ -20,6 +22,7 @@ class InboxAdapter(
         val tvFriendName: TextView = view.findViewById(R.id.tvFriendName)
         val tvLastMessage: TextView = view.findViewById(R.id.tvLastMessage)
         val tvTime: TextView = view.findViewById(R.id.tvTime)
+        val ivFriendAvatar: ImageView = view.findViewById(R.id.ivFriendAvatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InboxViewHolder {
@@ -33,6 +36,14 @@ class InboxAdapter(
         holder.tvFriendName.text = room.friend.username
         holder.tvLastMessage.text = room.lastMessage?.content ?: "No messages yet"
         
+        // Load Avatar with fallback to default_profile
+        Glide.with(holder.itemView.context)
+            .load(room.friend.avatarUrl)
+            .placeholder(R.drawable.default_profile)
+            .error(R.drawable.default_profile)
+            .circleCrop()
+            .into(holder.ivFriendAvatar)
+
         // Memformat waktu dari database (UTC) ke waktu lokal (WIB) dalam format 24 jam
         val sentAt = room.lastMessage?.sentAt
         if (sentAt != null) {

@@ -10,7 +10,9 @@ data class PartnerResult(
     @SerialName("learning_status")
     val learningStatus: String? = null,
     @SerialName("is_online")
-    val isOnline: Boolean = false
+    val isOnline: Boolean = false,
+    @SerialName("avatar_url")
+    val avatarUrl: String? = null
 )
 
 enum class RelationStatus {

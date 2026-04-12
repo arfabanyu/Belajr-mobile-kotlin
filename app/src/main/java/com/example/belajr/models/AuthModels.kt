@@ -15,5 +15,7 @@ data class ProfileUpdate(
     val username: String? = null,
     val interests: List<String>? = null,
     @SerialName("learning_status")
-    val learningStatus: String? = null
+    val learningStatus: String? = null,
+    @SerialName("avatar_url")
+    val avatarUrl: String? = null
 )

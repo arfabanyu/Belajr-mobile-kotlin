@@ -47,7 +47,7 @@
                     android:id="@+id/imgAvatar"
                     android:layout_width="85dp"
                     android:layout_height="85dp"
-                    android:src="@drawable/outline_account_circle_24"
+                    android:src="@drawable/default_profile"
                     android:background="@color/white"
                     android:padding="2dp"
                     app:shapeAppearanceOverlay="@style/CircleImageView" />

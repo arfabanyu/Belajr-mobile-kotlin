@@ -14,7 +14,7 @@
         android:id="@+id/ivMenuIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/outline_account_circle_24"
+        android:src="@drawable/default_profile"
         app:tint="@color/primary" />
 
     <TextView

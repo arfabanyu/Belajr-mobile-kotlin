@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.belajr.R
 import com.example.belajr.models.PartnerWithStatus
 import com.example.belajr.models.RelationStatus
@@ -23,6 +25,7 @@ class PartnerAdapter(
         val tvUsername: TextView = view.findViewById(R.id.tvUsername)
         val tvInterests: TextView = view.findViewById(R.id.tvInterests)
         val btnAction: MaterialButton = view.findViewById(R.id.btnAction)
+        val ivAvatar: ImageView = view.findViewById(R.id.ivAvatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerViewHolder {
@@ -36,10 +39,24 @@ class PartnerAdapter(
         holder.tvUsername.text = item.profile.username
         holder.tvInterests.text = "Interests: ${item.profile.interests?.joinToString(", ") ?: "None"}"
 
+        // Load Avatar with fallback to default_profile
+        if (!item.profile.avatarUrl.isNullOrEmpty()) {
+            Glide.with(holder.itemView.context)
+                .load(item.profile.avatarUrl)
+                .circleCrop()
+                .placeholder(R.drawable.default_profile)
+                .error(R.drawable.default_profile)
+                .into(holder.ivAvatar)
+        } else {
+            Glide.with(holder.itemView.context)
+                .load(R.drawable.default_profile)
+                .circleCrop()
+                .into(holder.ivAvatar)
+        }
+
         val context = holder.itemView.context
         val btn = holder.btnAction
         
-        // Reset state
         btn.isEnabled = true
         btn.visibility = View.VISIBLE
         btn.strokeWidth = 0
@@ -52,7 +69,6 @@ class PartnerAdapter(
             }
             RelationStatus.PENDING_OUT -> {
                 btn.text = "Cancel"
-                // Styling: Outline merah, background transparan
                 btn.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
                 btn.strokeColor = ColorStateList.valueOf(Color.parseColor("#FF5252"))
                 btn.strokeWidth = 3
@@ -73,7 +89,7 @@ class PartnerAdapter(
         }
 
         btn.setOnClickListener {
-            btn.isEnabled = false // Anti klik ganda
+            btn.isEnabled = false
             onActionClick(item)
         }
     }

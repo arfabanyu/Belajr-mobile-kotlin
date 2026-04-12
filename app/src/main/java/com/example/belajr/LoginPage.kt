@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
@@ -23,6 +24,9 @@ class LoginPage : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Install Splash Screen sebelum super.onCreate()
+        installSplashScreen()
+        
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login_page)
@@ -71,9 +75,11 @@ class LoginPage : AppCompatActivity() {
                             findViewById<Button>(R.id.mainButton).text = "Loading..."
                         }
                         is AuthState.Success -> {
-                            Toast.makeText(this@LoginPage, "Login Berhasil!", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginPage, HomePage::class.java))
-                            finish()
+                            // Cek apakah context masih valid sebelum pindah halaman
+                            if (!isFinishing) {
+                                startActivity(Intent(this@LoginPage, HomePage::class.java))
+                                finish()
+                            }
                         }
                         is AuthState.Error -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true
