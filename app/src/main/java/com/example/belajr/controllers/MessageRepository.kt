@@ -39,6 +39,23 @@ class MessageRepository {
                 .decodeList<Message>()
         }
 
+    suspend fun markMessagesAsRead(otherUserId: String): Result<Unit> = runCatching {
+        SupabaseClient.client.postgrest["messages"]
+            .update({ set("is_read", true) }) {
+                filter {
+                    eq("sender_id", otherUserId)
+                    eq("receiver_id", currentUserId)
+                    eq("is_read", false)
+                }
+            }
+    }
+
+    suspend fun getFriendProfile(friendId: String): Result<PartnerResult> = runCatching {
+        SupabaseClient.client.postgrest["profiles"]
+            .select { filter { eq("id", friendId) } }
+            .decodeSingle<PartnerResult>()
+    }
+
     suspend fun sendMessage(
         receiverId: String,
         content: String
@@ -47,7 +64,8 @@ class MessageRepository {
             Message(
                 senderId = currentUserId,
                 receiverId = receiverId,
-                content = content
+                content = content,
+                isRead = false
             )
         )
     }
@@ -62,7 +80,8 @@ class MessageRepository {
                 senderId = currentUserId,
                 receiverId = receiverId,
                 content = content,
-                attachmentUrl = attachmentUrl
+                attachmentUrl = attachmentUrl,
+                isRead = false
             )
         )
     }

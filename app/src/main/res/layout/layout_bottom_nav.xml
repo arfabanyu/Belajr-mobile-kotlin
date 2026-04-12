@@ -25,15 +25,33 @@
             app:tint="@color/text_secondary" />
 
         <!-- Chat List -->
-        <ImageView
-            android:id="@+id/nav_chat"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="28dp"
-            android:layout_weight="1"
-            android:src="@drawable/outline_chat_24"
-            app:tint="@color/text_secondary" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <!-- Friend List (Hidden to match screenshot) -->
+            <ImageView
+                android:id="@+id/nav_chat"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/outline_chat_24"
+                app:tint="@color/text_secondary" />
+
+            <!-- Chat Dot -->
+            <View
+                android:id="@+id/dot_chat"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_online_dot"
+                android:backgroundTint="#FF5252"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Friend List (Hidden) -->
         <ImageView
             android:id="@+id/nav_friends"
             android:layout_width="0dp"
@@ -57,15 +75,17 @@
                 android:src="@drawable/outline_circle_notifications_24"
                 app:tint="@color/text_secondary" />
 
-            <!-- Red Dot -->
+            <!-- Notification Dot -->
             <View
+                android:id="@+id/dot_notifications"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_online_dot"
-                android:backgroundTint="#FF5252" />
+                android:backgroundTint="#FF5252"
+                android:visibility="gone" />
         </FrameLayout>
 
         <!-- Profile -->

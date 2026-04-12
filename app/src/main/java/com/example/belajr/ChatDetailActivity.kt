@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -84,6 +85,9 @@ class ChatDetailActivity : AppCompatActivity() {
 
         viewModel.loadChatRooms()
         viewModel.openChat(receiverId!!)
+        
+        // Tandai pesan sebagai sudah dibaca saat membuka chat
+        viewModel.markAsRead(receiverId!!)
     }
 
     private fun setupViews() {
@@ -151,6 +155,8 @@ class ChatDetailActivity : AppCompatActivity() {
                     chatAdapter.updateMessages(messages)
                     if (messages.isNotEmpty()) {
                         rvMessages.smoothScrollToPosition(messages.size - 1)
+                        // Jika ada pesan baru saat chat terbuka, tandai sebagai dibaca
+                        viewModel.markAsRead(receiverId!!)
                     }
                 }
             }
@@ -165,7 +171,6 @@ class ChatDetailActivity : AppCompatActivity() {
                             if (friend.isOnline) android.graphics.Color.GREEN else android.graphics.Color.LTGRAY
                         )
                         
-                        // Load and update avatar in header
                         Glide.with(this@ChatDetailActivity)
                             .load(friend.avatarUrl)
                             .placeholder(R.drawable.default_profile)

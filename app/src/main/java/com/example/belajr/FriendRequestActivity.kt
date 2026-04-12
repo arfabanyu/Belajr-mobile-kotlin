@@ -1,5 +1,6 @@
 package com.example.belajr
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -28,6 +29,7 @@ class FriendRequestActivity : AppCompatActivity() {
     private lateinit var adapter: FriendRequestAdapter
     private lateinit var rvRequests: RecyclerView
     private lateinit var layoutEmpty: LinearLayout
+    private lateinit var ivProfile: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class FriendRequestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_friend_request)
 
         layoutEmpty = findViewById(R.id.layoutEmpty)
+        ivProfile = findViewById(R.id.ivProfile)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -46,26 +49,36 @@ class FriendRequestActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         setupRecyclerView()
-        setupProfileHeader()
+        setupViews()
         
         NavigationUtils.setupBottomNavigation(this, R.id.nav_notifications)
 
         observeRequests()
+        observeProfile()
 
         friendViewModel.loadIncomingRequests()
         authViewModel.loadProfile()
     }
 
-    private fun setupProfileHeader() {
-        val ivProfile = findViewById<ImageView>(R.id.ivProfile)
+    private fun setupViews() {
+        ivProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun observeProfile() {
         lifecycleScope.launch {
-            authViewModel.profile.collect { profile ->
-                if (profile?.avatarUrl != null) {
-                    Glide.with(this@FriendRequestActivity)
-                        .load(profile.avatarUrl)
-                        .placeholder(R.drawable.default_profile)
-                        .circleCrop()
-                        .into(ivProfile)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.profile.collect { profile ->
+                    if (profile != null) {
+                        Glide.with(this@FriendRequestActivity)
+                            .load(profile.avatarUrl)
+                            .placeholder(R.drawable.default_profile)
+                            .error(R.drawable.default_profile)
+                            .circleCrop()
+                            .into(ivProfile)
+                    }
                 }
             }
         }

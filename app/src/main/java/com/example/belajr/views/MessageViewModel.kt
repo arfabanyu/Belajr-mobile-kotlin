@@ -54,8 +54,16 @@ class MessageViewModel : ViewModel() {
     private var activeChannel: RealtimeChannel? = null
     private var chatJob: Job? = null
     private var profilesChannel: RealtimeChannel? = null
+    private var roomsChannel: RealtimeChannel? = null
 
     private val currentUserId get() = SupabaseClient.client.auth.currentUserOrNull()?.id
+
+    init {
+        // Trigger initial loads and start listening
+        loadChatRooms()
+        listenToRooms()
+        listenToProfiles()
+    }
 
     fun openChat(otherUserId: String) {
         chatJob?.cancel()
@@ -68,14 +76,20 @@ class MessageViewModel : ViewModel() {
             activeChannel = null
 
             _isLoading.value = true
-            _activeFriend.value = _chatRooms.value.find { it.friend.id == otherUserId }?.friend
+            
+            viewModelScope.launch {
+                repo.getFriendProfile(otherUserId).onSuccess {
+                    _activeFriend.value = it
+                }
+            }
 
             repo.getMessages(otherUserId)
                 .onSuccess { _messages.value = it }
                 .onFailure { _error.value = it.message }
 
             try {
-                val channel = repo.getChannel(otherUserId)
+                val channelId = "messages-${otherUserId}-${System.currentTimeMillis()}"
+                val channel = SupabaseClient.client.realtime.channel(channelId)
                 activeChannel = channel
 
                 channel.postgresChangeFlow<PostgresAction.Insert>(
@@ -85,17 +99,18 @@ class MessageViewModel : ViewModel() {
                 }.onEach { change ->
                     try {
                         val newMessage = change.decodeRecord<Message>()
-                        // Logika filter: hanya ambil pesan yang dikirim oleh teman atau ditujukan ke teman ini
                         val isRelevant = newMessage.senderId == otherUserId || newMessage.receiverId == otherUserId
                         
                         if (isRelevant) {
                             val currentList = _messages.value
-                            // Hindari duplikasi ID
                             if (currentList.none { it.id == newMessage.id }) {
-                                // Hapus pesan optimistik (ID sementara > 1 triliun) yang kontennya sama
                                 _messages.value = currentList.filterNot { 
                                     it.id != null && it.id > 1000000000000L && it.content == newMessage.content 
                                 } + newMessage
+                                
+                                if (newMessage.senderId == otherUserId) {
+                                    markAsRead(otherUserId)
+                                }
                             }
                         }
                     } catch (e: Exception) {
@@ -103,7 +118,18 @@ class MessageViewModel : ViewModel() {
                     }
                 }.launchIn(viewModelScope)
 
-                repo.subscribeChannel(channel)
+                channel.postgresChangeFlow<PostgresAction.Update>(
+                    schema = "public"
+                ) {
+                    table = "messages"
+                }.onEach { change ->
+                    val updated = change.decodeRecord<Message>()
+                    _messages.value = _messages.value.map { if (it.id == updated.id) updated else it }
+                }.launchIn(viewModelScope)
+
+                channel.subscribe()
+                SupabaseClient.client.realtime.connect()
+                
             } catch (e: Exception) {
                 Log.e("MessageViewModel", "Realtime Error: ${e.message}")
             }
@@ -112,18 +138,26 @@ class MessageViewModel : ViewModel() {
         }
     }
 
+    fun markAsRead(otherUserId: String) {
+        viewModelScope.launch {
+            repo.markMessagesAsRead(otherUserId).onSuccess {
+                loadChatRooms()
+            }
+        }
+    }
+
     fun sendMessage(receiverId: String, content: String) {
         val myId = currentUserId ?: return
         val now = getCurrentTimestamp()
 
-        // Optimistic Update
         val tempId = System.currentTimeMillis()
         val tempMessage = Message(
             id = tempId,
             senderId = myId,
             receiverId = receiverId,
             content = content,
-            sentAt = now
+            sentAt = now,
+            isRead = false
         )
         _messages.value = _messages.value + tempMessage
 
@@ -132,9 +166,6 @@ class MessageViewModel : ViewModel() {
                 .onFailure { 
                     _error.value = "Gagal mengirim: ${it.message}"
                     _messages.value = _messages.value.filter { it.id != tempId }
-                }
-                .onSuccess {
-                    // ID asli akan masuk lewat Realtime Insert
                 }
         }
     }
@@ -146,14 +177,14 @@ class MessageViewModel : ViewModel() {
         val now = getCurrentTimestamp()
         val tempId = System.currentTimeMillis()
 
-        // Optimistic Update: Tampilkan gambar lokal segera
         val tempMessage = Message(
             id = tempId,
             senderId = myId,
             receiverId = receiverId,
             content = content,
-            attachmentUrl = uri.toString(), // URL sementara (Local URI)
-            sentAt = now
+            attachmentUrl = uri.toString(),
+            sentAt = now,
+            isRead = false
         )
         _messages.value = _messages.value + tempMessage
 
@@ -165,9 +196,6 @@ class MessageViewModel : ViewModel() {
                         .onFailure { 
                             _error.value = it.message
                             _messages.value = _messages.value.filter { it.id != tempId }
-                        }
-                        .onSuccess {
-                            // Pesan asli akan masuk lewat Realtime, filterNot di listener akan hapus tempId ini
                         }
                 }
                 .onFailure { 
@@ -185,6 +213,7 @@ class MessageViewModel : ViewModel() {
     }
 
     fun loadChatRooms() {
+        val myId = currentUserId ?: return
         viewModelScope.launch {
             _isLoading.value = true
             friendRepo.getFriends()
@@ -192,7 +221,6 @@ class MessageViewModel : ViewModel() {
                     repo.getChatRooms(friends)
                         .onSuccess { rooms -> 
                             _chatRooms.value = rooms
-                            listenToProfiles()
                         }
                         .onFailure { _error.value = it.message }
                 }
@@ -201,11 +229,49 @@ class MessageViewModel : ViewModel() {
         }
     }
 
+    private fun listenToRooms() {
+        if (roomsChannel != null) return
+        viewModelScope.launch {
+            try {
+                Log.d("MessageViewModel", "Connecting Realtime Rooms...")
+                SupabaseClient.client.realtime.connect()
+                val channelId = "global-rooms-${System.currentTimeMillis()}"
+                val channel = SupabaseClient.client.realtime.channel(channelId)
+                roomsChannel = channel
+                
+                channel.postgresChangeFlow<PostgresAction.Insert>(schema = "public") { table = "messages" }
+                    .onEach { action ->
+                        try {
+                            val newMessage = action.decodeRecord<Message>()
+                            if (newMessage.receiverId == currentUserId) {
+                                Log.d("MessageViewModel", "New message detected for current user, refreshing chat list")
+                                loadChatRooms() 
+                            }
+                        } catch (e: Exception) {
+                            Log.e("MessageViewModel", "Error decoding global message: ${e.message}")
+                            loadChatRooms() // fallback refresh
+                        }
+                    }.launchIn(viewModelScope)
+                
+                channel.postgresChangeFlow<PostgresAction.Update>(schema = "public") { table = "messages" }
+                    .onEach { 
+                        loadChatRooms() 
+                    }.launchIn(viewModelScope)
+                
+                channel.subscribe { status ->
+                    Log.d("MessageViewModel", "Global Rooms Status: $status")
+                }
+            } catch (e: Exception) { Log.e("MessageViewModel", "Rooms Update Error: ${e.message}") }
+        }
+    }
+
     private fun listenToProfiles() {
         if (profilesChannel != null) return
         viewModelScope.launch {
             try {
-                val channel = SupabaseClient.client.realtime.channel("profiles-status") { }
+                SupabaseClient.client.realtime.connect()
+                val channelId = "global-profiles-${System.currentTimeMillis()}"
+                val channel = SupabaseClient.client.realtime.channel(channelId)
                 profilesChannel = channel
                 channel.postgresChangeFlow<PostgresAction.Update>(schema = "public") { table = "profiles" }
                     .onEach { change ->
@@ -239,6 +305,12 @@ class MessageViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        roomsChannel?.let { 
+            SupabaseClient.client.realtime.removeChannel(it)
+        }
+        profilesChannel?.let {
+            SupabaseClient.client.realtime.removeChannel(it)
+        }
         closeChat()
     }
 }

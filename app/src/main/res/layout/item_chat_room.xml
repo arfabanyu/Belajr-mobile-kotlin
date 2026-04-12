@@ -84,6 +84,16 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp" />
 
+            <!-- Unread Dot for Item -->
+            <View
+                android:id="@+id/dot_unread"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_online_dot"
+                android:backgroundTint="#FF5252"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/ivPin"
                 android:layout_width="18dp"

@@ -68,7 +68,13 @@ class ChatAdapter(
         private val ivAttachment: ImageView = view.findViewById(R.id.ivAttachment)
 
         fun bind(message: Message) {
-            tvMessage.text = message.content
+            if (message.content.isNullOrEmpty()) {
+                tvMessage.visibility = View.GONE
+            } else {
+                tvMessage.visibility = View.VISIBLE
+                tvMessage.text = message.content
+            }
+
             tvTime.text = formatTime(message.sentAt)
             
             if (!message.attachmentUrl.isNullOrEmpty()) {
@@ -95,7 +101,13 @@ class ChatAdapter(
         private val ivAttachment: ImageView = view.findViewById(R.id.ivAttachment)
 
         fun bind(message: Message) {
-            tvMessage.text = message.content
+            if (message.content.isNullOrEmpty()) {
+                tvMessage.visibility = View.GONE
+            } else {
+                tvMessage.visibility = View.VISIBLE
+                tvMessage.text = message.content
+            }
+
             tvTime.text = formatTime(message.sentAt)
             
             if (!message.attachmentUrl.isNullOrEmpty()) {

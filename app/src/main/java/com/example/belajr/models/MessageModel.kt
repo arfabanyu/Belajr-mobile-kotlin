@@ -13,7 +13,9 @@ data class Message(
     @SerialName("attachment_url")
     val attachmentUrl: String? = null,
     @SerialName("sent_at")
-    val sentAt: String? = null
+    val sentAt: String? = null,
+    @SerialName("is_read")
+    val isRead: Boolean = false
 )
 
 data class ChatRoom(

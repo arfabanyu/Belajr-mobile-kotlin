@@ -35,6 +35,7 @@ class HomePage : AppCompatActivity() {
     private lateinit var subjectAdapter: SubjectAdapter
     private lateinit var layoutEmptyPartners: LinearLayout
     private lateinit var etSearch: EditText
+    private lateinit var ivProfile: ImageView
     private var currentKeyword: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +45,7 @@ class HomePage : AppCompatActivity() {
 
         layoutEmptyPartners = findViewById(R.id.layoutEmptyPartners)
         etSearch = findViewById(R.id.etSearch)
+        ivProfile = findViewById(R.id.ivProfile)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -54,6 +56,7 @@ class HomePage : AppCompatActivity() {
         matchViewModel = ViewModelProvider(this)[MatchViewModel::class.java]
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
+        setupViews()
         setupSubjectRecyclerView()
         setupPartnerRecyclerView()
         setupSearchView()
@@ -67,13 +70,18 @@ class HomePage : AppCompatActivity() {
         authViewModel.loadProfile()
     }
 
+    private fun setupViews() {
+        ivProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     private fun setupSearchView() {
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString().trim()
-                // Kita bisa mencari berdasarkan nama di client-side atau panggil API lagi
-                // Untuk konsistensi dengan filter subject, kita panggil searchPartners
                 matchViewModel.searchPartners(query)
             }
             override fun afterTextChanged(s: Editable?) {}
@@ -87,7 +95,7 @@ class HomePage : AppCompatActivity() {
 
         subjectAdapter = SubjectAdapter(initialSubjects) { subject ->
             currentKeyword = if (subject.name == "All") "" else subject.name
-            etSearch.setText(currentKeyword) // Sinkronkan search bar dengan pilihan subject
+            etSearch.setText(currentKeyword)
             matchViewModel.searchPartners(currentKeyword)
         }
         rvSubjects.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -165,7 +173,6 @@ class HomePage : AppCompatActivity() {
         lifecycleScope.launch {
             authViewModel.profile.collect { profile ->
                 profile?.let {
-                    val ivProfile = findViewById<ImageView>(R.id.ivProfile)
                     Glide.with(this@HomePage)
                         .load(it.avatarUrl)
                         .placeholder(R.drawable.default_profile)

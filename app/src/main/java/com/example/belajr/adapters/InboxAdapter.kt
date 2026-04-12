@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.belajr.R
 import com.example.belajr.models.ChatRoom
+import com.example.belajr.SupabaseClient
+import io.github.jan.supabase.auth.auth
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -18,11 +20,14 @@ class InboxAdapter(
     private val onClick: (ChatRoom) -> Unit
 ) : RecyclerView.Adapter<InboxAdapter.InboxViewHolder>() {
 
+    private val currentUserId = SupabaseClient.client.auth.currentUserOrNull()?.id
+
     class InboxViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvFriendName: TextView = view.findViewById(R.id.tvFriendName)
         val tvLastMessage: TextView = view.findViewById(R.id.tvLastMessage)
         val tvTime: TextView = view.findViewById(R.id.tvTime)
         val ivFriendAvatar: ImageView = view.findViewById(R.id.ivFriendAvatar)
+        val dotUnread: View = view.findViewById(R.id.dot_unread)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InboxViewHolder {
@@ -36,7 +41,14 @@ class InboxAdapter(
         holder.tvFriendName.text = room.friend.username
         holder.tvLastMessage.text = room.lastMessage?.content ?: "No messages yet"
         
-        // Load Avatar with fallback to default_profile
+        // Logika Unread Dot: Tampilkan jika ada pesan terakhir, pengirimnya bukan saya, dan isRead = false
+        val isUnread = room.lastMessage != null && 
+                       room.lastMessage.senderId != currentUserId && 
+                       !room.lastMessage.isRead
+        
+        holder.dotUnread.visibility = if (isUnread) View.VISIBLE else View.GONE
+
+        // Load Avatar
         Glide.with(holder.itemView.context)
             .load(room.friend.avatarUrl)
             .placeholder(R.drawable.default_profile)
@@ -44,22 +56,19 @@ class InboxAdapter(
             .circleCrop()
             .into(holder.ivFriendAvatar)
 
-        // Memformat waktu dari database (UTC) ke waktu lokal (WIB) dalam format 24 jam
+        // Format waktu
         val sentAt = room.lastMessage?.sentAt
         if (sentAt != null) {
             try {
-                // Format ISO 8601 dari Supabase
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
                 inputFormat.timeZone = TimeZone.getTimeZone("UTC")
                 val date = inputFormat.parse(sentAt)
                 
-                // Output format 24 jam (HH:mm) tanpa tulisan tambahan
                 val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                outputFormat.timeZone = TimeZone.getDefault() // Mengikuti settingan HP (WIB)
+                outputFormat.timeZone = TimeZone.getDefault()
                 
                 holder.tvTime.text = date?.let { outputFormat.format(it) } ?: ""
             } catch (e: Exception) {
-                // Fallback jika terjadi error parsing
                 val fullTime = sentAt.substringAfter("T").substringBefore(".")
                 holder.tvTime.text = if (fullTime.length >= 5) fullTime.substring(0, 5) else fullTime
             }

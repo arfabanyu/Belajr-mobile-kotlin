@@ -40,6 +40,7 @@ class AuthViewModel : ViewModel() {
             SupabaseClient.client.auth.sessionStatus.collect { status ->
                 when (status) {
                     is SessionStatus.Authenticated -> {
+                        updateOnlineStatus(true)
                         if (_authState.value !is AuthState.Success) {
                             _authState.value = AuthState.Success
                             loadProfile()
@@ -54,6 +55,12 @@ class AuthViewModel : ViewModel() {
                     else -> {}
                 }
             }
+        }
+    }
+
+    fun updateOnlineStatus(isOnline: Boolean) {
+        viewModelScope.launch {
+            repo.updateProfile(ProfileUpdate(isOnline = isOnline))
         }
     }
 
@@ -77,7 +84,6 @@ class AuthViewModel : ViewModel() {
             _authState.value = AuthState.Loading
             repo.login(email, password)
                 .onSuccess {
-                    // SessionStatus.Authenticated will handle state change
                     NotificationRepository().registerFcmToken()
                 }
                 .onFailure {
@@ -90,6 +96,7 @@ class AuthViewModel : ViewModel() {
 
     fun logout() {
         viewModelScope.launch {
+            updateOnlineStatus(false)
             NotificationRepository().clearFcmToken()
             repo.logout()
                 .onSuccess {

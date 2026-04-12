@@ -17,5 +17,7 @@ data class ProfileUpdate(
     @SerialName("learning_status")
     val learningStatus: String? = null,
     @SerialName("avatar_url")
-    val avatarUrl: String? = null
+    val avatarUrl: String? = null,
+    @SerialName("is_online")
+    val isOnline: Boolean? = null
 )

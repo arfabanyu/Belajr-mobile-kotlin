@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,16 +18,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.belajr.adapters.InboxAdapter
 import com.example.belajr.adapters.OnlineFriendAdapter
 import com.example.belajr.models.ChatRoom
 import com.example.belajr.models.RelationStatus
+import com.example.belajr.views.AuthViewModel
 import com.example.belajr.views.MessageViewModel
 import kotlinx.coroutines.launch
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MessageViewModel
+    private lateinit var authViewModel: AuthViewModel
     private lateinit var inboxAdapter: InboxAdapter
     private lateinit var onlineAdapter: OnlineFriendAdapter
     
@@ -35,6 +39,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var etSearch: EditText
     private lateinit var llIndicators: LinearLayout
     private lateinit var layoutEmptyChats: LinearLayout
+    private lateinit var ivProfile: ImageView
     
     private var allChatRooms: List<ChatRoom> = emptyList()
 
@@ -52,13 +57,18 @@ class ChatActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this)[MessageViewModel::class.java]
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         setupViews()
         setupRecyclerViews()
         NavigationUtils.setupBottomNavigation(this, R.id.nav_chat)
         observeData()
+    }
 
+    override fun onStart() {
+        super.onStart()
         viewModel.loadChatRooms()
+        authViewModel.loadProfile()
     }
 
     private fun setupViews() {
@@ -66,6 +76,7 @@ class ChatActivity : AppCompatActivity() {
         rvOnlineFriends = findViewById(R.id.rvOnlineFriends)
         etSearch = findViewById(R.id.etSearch)
         llIndicators = findViewById(R.id.llIndicators)
+        ivProfile = findViewById(R.id.ivProfile)
 
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -74,6 +85,11 @@ class ChatActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        ivProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun filterChats(query: String) {
@@ -124,6 +140,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
+        // Chat list and online friends
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.chatRooms.collect { rooms ->
@@ -135,6 +152,22 @@ class ChatActivity : AppCompatActivity() {
                     onlineAdapter.updateData(onlineFriends)
                     
                     updateIndicators(onlineFriends.size)
+                }
+            }
+        }
+
+        // Current user profile for header
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.profile.collect { profile ->
+                    if (profile != null) {
+                        Glide.with(this@ChatActivity)
+                            .load(profile.avatarUrl)
+                            .placeholder(R.drawable.default_profile)
+                            .error(R.drawable.default_profile)
+                            .circleCrop()
+                            .into(ivProfile)
+                    }
                 }
             }
         }
