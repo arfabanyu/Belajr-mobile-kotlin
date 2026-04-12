@@ -16,19 +16,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"
+            android:text="@string/notification_title"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:fontFamily="@font/righteous"/>
     </LinearLayout>
 
-    <!-- Notification List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvNotifications"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="10dp"/>
+        android:layout_weight="1">
+
+        <!-- Notification List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:clipToPadding="false"/>
+
+        <!-- Tampilan Kosong -->
+        <LinearLayout
+            android:id="@+id/layoutEmptyNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/app_icon_transparent"
+                android:alpha="0.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/no_notifications"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </FrameLayout>
 
     <!-- Bottom Nav -->
     <include layout="@layout/layout_bottom_nav" />

@@ -1,3 +1,62 @@
 <resources>
     <string name="app_name">BelaJR</string>
+    <string name="login_title">Masuk</string>
+    <string name="register_title">Daftar</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Kata Sandi</string>
+    <string name="username_hint">Nama Pengguna</string>
+    <string name="login_button">Masuk</string>
+    <string name="register_button">Daftar</string>
+    <string name="forgot_password">Lupa kata sandi?</string>
+    <string name="dont_have_account">Belum punya akun? </string>
+    <string name="have_account">Sudah punya akun? </string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="logout">Keluar</string>
+    <string name="save">Simpan</string>
+    <string name="bio_hint">Ceritakan tentang dirimu…</string>
+    <string name="interests_title">Minat &amp; Keahlian</string>
+    <string name="friends_count">Teman</string>
+    <string name="bio_empty">Belum ada bio.</string>
+    <string name="profile_title">Profil Saya</string>
+    <string name="loading">Memuat…</string>
+    <string name="error_empty_fields">Semua kolom harus diisi</string>
+    <string name="register_success">Registrasi Berhasil!</string>
+    <string name="profile_updated">Profil berhasil diperbarui!</string>
+
+    <!-- Home Page -->
+    <string name="subject_title">Mata Pelajaran</string>
+    <string name="find_partner_title">Cari teman belajarmu!</string>
+    <string name="find_partner_desc">Belajar bersama, raih lebih banyak.\nTerhubung dengan pelajar sefrekuensi di sekitarmu.</string>
+    <string name="recommended_partners">Rekomendasi Partner</string>
+    <string name="search_hint">Cari berdasarkan nama atau minat…</string>
+    <string name="no_partners_found">Tidak ada partner ditemukan</string>
+
+    <!-- Chat Page -->
+    <string name="message_title">Pesan</string>
+    <string name="your_friends">Teman Kamu</string>
+    <string name="search_chat_hint">Cari…</string>
+    <string name="no_chats_yet">Belum ada percakapan</string>
+    <string name="type_message_hint">Ketik pesan…</string>
+    <string name="online_status">Online</string>
+    <string name="offline_status">Offline</string>
+
+    <!-- Notification Page -->
+    <string name="notification_title">Notifikasi</string>
+    <string name="no_notifications">Belum ada notifikasi</string>
+
+    <!-- Other Profile -->
+    <string name="send_request">Kirim Pertemanan</string>
+    <string name="cancel_request">Batal Kirim</string>
+    <string name="accept_request">Terima Pertemanan</string>
+    <string name="send_message">Kirim Pesan</string>
+    <string name="request_pending">Menunggu Konfirmasi</string>
+    <string name="already_friends">Sudah Berteman</string>
+    <string name="toast_request_sent">Permintaan dikirim!</string>
+    <string name="toast_request_cancelled">Permintaan dibatalkan</string>
+    <string name="toast_accept_via_notif">Silakan terima melalui Notifikasi</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_chat">Pesan</string>
+    <string name="nav_profile">Profil</string>
 </resources>

@@ -35,6 +35,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var imgProfile: ShapeableImageView
     
     private var selectedImageUri: Uri? = null
+    private var isUpdating = false // Tambahkan flag ini
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
@@ -47,31 +48,23 @@ class EditProfileActivity : AppCompatActivity() {
         "Matematika", "Bahasa Indonesia", "Bahasa Inggris", "Fisika", "Kimia", "Biologi",
         "Ekonomi", "Geografi", "Sosiologi", "Sejarah", "Informatika", "Seni Budaya",
         "PJOK", "PAI", "PKN", "Antropologi", "Bahasa Arab", "Bahasa Mandarin", "Bahasa Jepang",
-        
         "Rekayasa Perangkat Lunak (RPL)", "Teknik Komputer Jaringan (TKJ)", "Multimedia", 
         "Sistem Informatika, Jaringan & Aplikasi (SIJA)", "Cyber Security", "Animasi",
         "Desain Komunikasi Visual (DKV)", "Produksi Film & Televisi",
-        
         "Teknik Kendaraan Ringan (TKR)", "Teknik Sepeda Motor (TSM)", "Teknik Alat Berat",
         "Teknik Pemesinan (TP)", "Teknik Pengelasan (Las)", "Teknik Mekatronika",
         "Teknik Audio Video (TAV)", "Teknik Pesawat Udara", "Teknik Konstruksi Kapal",
-        
         "Teknik Instalasi Tenaga Listrik (TITL)", "Teknik Otomasi Industri", 
         "Teknik Pendingin & Tata Udara", "Teknik Energi Terbarukan",
-        
         "Bisnis Konstruksi & Properti (BKP)", "Desain Pemodelan & Informasi Bangunan (DPIB)",
         "Teknik Geomatika (Surveyor)", "Geologi Pertambangan",
-        
         "Akuntansi & Keuangan Lembaga", "Otomatisasi & Tata Kelola Perkantoran", 
         "Bisnis Daring & Pemasaran", "Perbankan Syariah", "Logistik",
-        
         "Kuliner / Tata Boga", "Tata Busana (Fashion Design)", "Perhotelan", 
         "Wisata & Perjalanan", "Kecantikan & Tata Rias", "Kriya Kreatif Batik",
         "Kriya Kreatif Keramik", "Kriya Kreatif Logam",
-        
         "Asisten Keperawatan", "Farmasi Klinis & Komunitas", "Farmasi Industri",
         "Dental Asisten", "Teknologi Laboratorium Medik", "Pekerjaan Sosial",
-        
         "Agribisnis Tanaman Pangan & Hortikultura", "Agribisnis Ternak Unggas",
         "Teknologi Hasil Pertanian", "Perhutanan", "Nautika Kapal Niaga", 
         "Teknika Kapal Penangkap Ikan", "Budidaya Perikanan"
@@ -128,6 +121,8 @@ class EditProfileActivity : AppCompatActivity() {
             return
         }
 
+        isUpdating = true // Tandai bahwa kita sedang melakukan update
+        
         lifecycleScope.launch {
             var avatarUrl: String? = authViewModel.profile.value?.avatarUrl
             val oldAvatarUrl = avatarUrl
@@ -225,10 +220,15 @@ class EditProfileActivity : AppCompatActivity() {
                         is AuthState.Success -> {
                             btnSave.isEnabled = true
                             btnSave.alpha = 1.0f
-                            Toast.makeText(this@EditProfileActivity, "Profil berhasil diperbarui!", Toast.LENGTH_SHORT).show()
-                            finish()
+                            // HANYA finish jika status Success dipicu oleh klik tombol simpan
+                            if (isUpdating) {
+                                isUpdating = false
+                                Toast.makeText(this@EditProfileActivity, "Profil berhasil diperbarui!", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
                         }
                         is AuthState.Error -> {
+                            isUpdating = false
                             btnSave.isEnabled = true
                             btnSave.alpha = 1.0f
                             Toast.makeText(this@EditProfileActivity, state.message, Toast.LENGTH_SHORT).show()

@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Subject"
+                android:text="@string/subject_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
@@ -79,7 +79,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Find your study partner!"
+                            android:text="@string/find_partner_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/primary" />
@@ -87,7 +87,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Study Together, Achieve more.\nConnect with like-minded Learners around you."
+                            android:text="@string/find_partner_desc"
                             android:textSize="12sp"
                             android:textColor="@color/text_secondary" />
                     </LinearLayout>
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Recommended Partners"
+                android:text="@string/recommended_partners"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
@@ -129,7 +129,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="Search by name or interests..."
+                    android:hint="@string/search_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:textSize="14sp" />
@@ -174,7 +174,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="No partners found"
+                        android:text="@string/no_partners_found"
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
                 </LinearLayout>

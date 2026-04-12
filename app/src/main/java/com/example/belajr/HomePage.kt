@@ -91,10 +91,10 @@ class HomePage : AppCompatActivity() {
     private fun setupSubjectRecyclerView() {
         val rvSubjects = findViewById<RecyclerView>(R.id.rvSubjects)
         
-        val initialSubjects = listOf(Subject("All"))
+        val initialSubjects = listOf(Subject("Semua"))
 
         subjectAdapter = SubjectAdapter(initialSubjects) { subject ->
-            currentKeyword = if (subject.name == "All") "" else subject.name
+            currentKeyword = if (subject.name == "Semua") "" else subject.name
             etSearch.setText(currentKeyword)
             matchViewModel.searchPartners(currentKeyword)
         }
@@ -120,11 +120,11 @@ class HomePage : AppCompatActivity() {
                 when (partner.relationStatus) {
                     RelationStatus.NONE -> {
                         matchViewModel.sendRequest(partner.profile.id, etSearch.text.toString())
-                        Toast.makeText(this, "Connection request sent!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.toast_request_sent), Toast.LENGTH_SHORT).show()
                     }
                     RelationStatus.PENDING_OUT -> {
                         matchViewModel.cancelRequest(partner.profile.id, partner.requestId, etSearch.text.toString())
-                        Toast.makeText(this, "Request cancelled", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.toast_request_cancelled), Toast.LENGTH_SHORT).show()
                     }
                     RelationStatus.FRIEND -> {
                         val intent = Intent(this, ChatDetailActivity::class.java).apply {
@@ -162,7 +162,7 @@ class HomePage : AppCompatActivity() {
 
         lifecycleScope.launch {
             matchViewModel.interests.collectLatest { interestsList ->
-                val dynamicSubjects = mutableListOf(Subject("All"))
+                val dynamicSubjects = mutableListOf(Subject("Semua"))
                 interestsList.forEach { interest ->
                     dynamicSubjects.add(Subject(interest))
                 }

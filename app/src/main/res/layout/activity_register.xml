@@ -35,7 +35,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/righteous"
-            android:text="Register"
+            android:text="@string/register_title"
             android:textColor="@color/white"
             android:textSize="36sp" />
 
@@ -45,7 +45,7 @@
             android:layout_height="55dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/borderradiuslogin"
-            android:hint="Username"
+            android:hint="@string/username_hint"
             android:inputType="text"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
@@ -57,7 +57,7 @@
             android:layout_height="55dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/borderradiuslogin"
-            android:hint="Email"
+            android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
@@ -69,7 +69,7 @@
             android:layout_height="55dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/borderradiuslogin"
-            android:hint="Password"
+            android:hint="@string/password_hint"
             android:inputType="textPassword"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
@@ -82,7 +82,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/btn_primary"
             android:fontFamily="@font/righteous"
-            android:text="Create Account"
+            android:text="@string/register_button"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -98,7 +98,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account? "
+                android:text="@string/have_account"
                 android:textColor="@color/white" />
 
             <TextView
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/righteous"
-                android:text="Login"
+                android:text="@string/login_title"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>

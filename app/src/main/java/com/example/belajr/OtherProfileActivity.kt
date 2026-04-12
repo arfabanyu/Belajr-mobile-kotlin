@@ -59,9 +59,9 @@ class OtherProfileActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        findViewById<TextView>(R.id.tvName).text = username ?: "User"
+        findViewById<TextView>(R.id.tvName).text = username ?: getString(R.string.app_name)
         
-        val bioFromDb = intent.getStringExtra("BIO") ?: "No bio available"
+        val bioFromDb = intent.getStringExtra("BIO") ?: getString(R.string.bio_empty)
         findViewById<TextView>(R.id.tvAboutDetail).text = bioFromDb
         
         val interestsString = intent.getStringExtra("INTERESTS") ?: ""
@@ -131,7 +131,7 @@ class OtherProfileActivity : AppCompatActivity() {
             
             when (relationStatus) {
                 RelationStatus.NONE -> {
-                    btn.text = "Send Request"
+                    btn.setText(R.string.send_request)
                     btn.isEnabled = true
                     btn.alpha = 1.0f
                     mBtnAction?.backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
@@ -139,7 +139,7 @@ class OtherProfileActivity : AppCompatActivity() {
                     mBtnAction?.strokeWidth = 0
                 }
                 RelationStatus.PENDING_OUT -> {
-                    btn.text = "Cancel Request"
+                    btn.setText(R.string.cancel_request)
                     btn.isEnabled = true
                     btn.alpha = 1.0f
                     
@@ -154,7 +154,7 @@ class OtherProfileActivity : AppCompatActivity() {
                     }
                 }
                 RelationStatus.PENDING_IN -> {
-                    btn.text = "Accept Request"
+                    btn.setText(R.string.accept_request)
                     btn.isEnabled = true
                     btn.alpha = 1.0f
                     mBtnAction?.backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
@@ -173,7 +173,7 @@ class OtherProfileActivity : AppCompatActivity() {
                     matchViewModel.sendRequest(it, "")
                     relationStatus = RelationStatus.PENDING_OUT
                     updateActionButton(btn, btnMessage)
-                    Toast.makeText(this, "Request sent!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.toast_request_sent, Toast.LENGTH_SHORT).show()
                 }
             }
             RelationStatus.PENDING_OUT -> {
@@ -181,11 +181,11 @@ class OtherProfileActivity : AppCompatActivity() {
                     matchViewModel.cancelRequest(it, requestId, "")
                     relationStatus = RelationStatus.NONE
                     updateActionButton(btn, btnMessage)
-                    Toast.makeText(this, "Request cancelled", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.toast_request_cancelled, Toast.LENGTH_SHORT).show()
                 }
             }
             RelationStatus.PENDING_IN -> {
-                Toast.makeText(this, "Please accept via Notifications", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.toast_accept_via_notif, Toast.LENGTH_SHORT).show()
             }
             else -> {}
         }

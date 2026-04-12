@@ -30,7 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Profil"
+                    android:text="@string/profile_title"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -49,7 +49,7 @@
                     android:layout_height="85dp"
                     android:src="@drawable/default_profile"
                     android:background="@color/white"
-                    android:padding="2dp"
+                    android:padding="1dp"
                     app:shapeAppearanceOverlay="@style/CircleImageView" />
 
                 <LinearLayout
@@ -87,7 +87,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Teman"
+                                android:text="@string/friends_count"
                                 android:textColor="@color/white"
                                 android:textSize="10sp"
                                 android:alpha="0.8" />
@@ -107,7 +107,7 @@
                     android:layout_width="0dp"
                     android:layout_height="54dp"
                     android:layout_weight="1.2"
-                    android:text="Send Request"
+                    android:text="@string/send_request"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
@@ -120,7 +120,7 @@
                     android:layout_height="54dp"
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
-                    android:text="Send Message"
+                    android:text="@string/send_message"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -146,7 +146,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bio Profile"
+                android:text="Bio Profil"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -156,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Bio content from database..."
+                android:text="@string/bio_empty"
                 android:textColor="@color/text_secondary"
                 android:textSize="15sp"
                 android:lineSpacingExtra="6dp" />
@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Interests"
+                        android:text="@string/interests_title"
                         android:textColor="@color/primary"
                         android:textStyle="bold" />
 

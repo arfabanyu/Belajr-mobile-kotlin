@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:fontFamily="sans-serif-black"
-            android:text="Message"
+            android:text="@string/message_title"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-black"
-                android:text="Your friends"
+                android:text="@string/your_friends"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -111,7 +111,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="Search..."
+                    android:hint="@string/search_chat_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:textSize="13sp" />
@@ -159,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="No chats yet"
+                    android:text="@string/no_chats_yet"
                     android:textColor="@color/text_secondary"
                     android:textSize="16sp" />
             </LinearLayout>

@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.belajr.utils.ErrorUtils
 import com.example.belajr.views.AuthState
 import com.example.belajr.views.AuthViewModel
 import kotlinx.coroutines.launch
@@ -42,6 +43,11 @@ class LoginPage : AppCompatActivity() {
         val passwordEditText = findViewById<EditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.mainButton)
         val tvRegister = findViewById<TextView>(R.id.tvRegister)
+        val tvForgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
+
+        tvForgotPassword.setOnClickListener {
+            Toast.makeText(this, "Fitur forgot password akan segera hadir!", Toast.LENGTH_SHORT).show()
+        }
 
         tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterPage::class.java))
@@ -81,7 +87,9 @@ class LoginPage : AppCompatActivity() {
                         is AuthState.Error -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true
                             findViewById<Button>(R.id.mainButton).text = "Login"
-                            Toast.makeText(this@LoginPage, state.message, Toast.LENGTH_LONG).show()
+                            // Menggunakan ErrorUtils untuk pesan yang lebih manusiawi
+                            val friendlyMessage = ErrorUtils.parseErrorMessage(state.message)
+                            Toast.makeText(this@LoginPage, friendlyMessage, Toast.LENGTH_LONG).show()
                         }
                         else -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true

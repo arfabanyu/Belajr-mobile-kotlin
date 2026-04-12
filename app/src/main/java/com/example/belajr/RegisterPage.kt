@@ -1,6 +1,5 @@
 package com.example.belajr
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -14,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.belajr.utils.ErrorUtils
 import com.example.belajr.views.AuthState
 import com.example.belajr.views.AuthViewModel
 import kotlinx.coroutines.launch
@@ -76,7 +76,9 @@ class RegisterPage : AppCompatActivity() {
                         is AuthState.Error -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true
                             findViewById<Button>(R.id.mainButton).text = "Create Account"
-                            Toast.makeText(this@RegisterPage, state.message, Toast.LENGTH_LONG).show()
+                            // Menggunakan ErrorUtils untuk pesan yang lebih manusiawi
+                            val friendlyMessage = ErrorUtils.parseErrorMessage(state.message)
+                            Toast.makeText(this@RegisterPage, friendlyMessage, Toast.LENGTH_LONG).show()
                         }
                         else -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true
