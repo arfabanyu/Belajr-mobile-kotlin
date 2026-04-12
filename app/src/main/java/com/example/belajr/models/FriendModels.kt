@@ -25,7 +25,7 @@ data class FriendRequest(
     val status: String = "pending",
     @SerialName("created_at")
     val createdAt: String? = null,
-    // Tambahkan ini untuk menampung data join dari profiles
+    // buat tampung data join dari profiles
     val sender: Profile? = null
 )
 

@@ -100,7 +100,7 @@ class AuthViewModel : ViewModel() {
             NotificationRepository().clearFcmToken()
             repo.logout()
                 .onSuccess {
-                    // SessionStatus.NotAuthenticated will handle state change
+                    // pakai SessionStatus.NotAuthenticated
                 }
                 .onFailure {
                     _authState.value = AuthState.Error(
@@ -114,9 +114,6 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             repo.getCurrentProfile()
                 .onSuccess { _profile.value = it }
-                .onFailure {
-                    // Silent fail for profile loading if needed
-                }
         }
     }
 
@@ -144,9 +141,5 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             repo.deleteAvatar(fileName)
         }
-    }
-
-    fun checkSession() {
-        // Diambil alih oleh observeSessionStatus() di init
     }
 }

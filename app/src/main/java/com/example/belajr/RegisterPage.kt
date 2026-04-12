@@ -76,7 +76,6 @@ class RegisterPage : AppCompatActivity() {
                         is AuthState.Error -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true
                             findViewById<Button>(R.id.mainButton).text = "Create Account"
-                            // Menggunakan ErrorUtils untuk pesan yang lebih manusiawi
                             val friendlyMessage = ErrorUtils.parseErrorMessage(state.message)
                             Toast.makeText(this@RegisterPage, friendlyMessage, Toast.LENGTH_LONG).show()
                         }

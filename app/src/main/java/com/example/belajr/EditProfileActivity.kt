@@ -35,7 +35,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var imgProfile: ShapeableImageView
     
     private var selectedImageUri: Uri? = null
-    private var isUpdating = false // Tambahkan flag ini
+    private var isUpdating = false
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
@@ -121,7 +121,7 @@ class EditProfileActivity : AppCompatActivity() {
             return
         }
 
-        isUpdating = true // Tandai bahwa kita sedang melakukan update
+        isUpdating = true
         
         lifecycleScope.launch {
             var avatarUrl: String? = authViewModel.profile.value?.avatarUrl
@@ -220,7 +220,6 @@ class EditProfileActivity : AppCompatActivity() {
                         is AuthState.Success -> {
                             btnSave.isEnabled = true
                             btnSave.alpha = 1.0f
-                            // HANYA finish jika status Success dipicu oleh klik tombol simpan
                             if (isUpdating) {
                                 isUpdating = false
                                 Toast.makeText(this@EditProfileActivity, "Profil berhasil diperbarui!", Toast.LENGTH_SHORT).show()

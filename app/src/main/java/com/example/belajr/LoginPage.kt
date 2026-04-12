@@ -87,7 +87,6 @@ class LoginPage : AppCompatActivity() {
                         is AuthState.Error -> {
                             findViewById<Button>(R.id.mainButton).isEnabled = true
                             findViewById<Button>(R.id.mainButton).text = "Login"
-                            // Menggunakan ErrorUtils untuk pesan yang lebih manusiawi
                             val friendlyMessage = ErrorUtils.parseErrorMessage(state.message)
                             Toast.makeText(this@LoginPage, friendlyMessage, Toast.LENGTH_LONG).show()
                         }

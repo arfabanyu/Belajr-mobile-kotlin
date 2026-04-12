@@ -19,14 +19,12 @@ class BelajrMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        
-        // Ambil data mentah dari payload
+
         val rawTitle = message.notification?.title ?: message.data["title"]
         val rawBody = message.notification?.body ?: message.data["body"]
-        val type = message.data["type"] // e.g., "friend_request", "new_message"
+        val type = message.data["type"]
         val senderName = message.data["sender_name"] ?: "Seseorang"
 
-        // Mapping pesan agar lebih manusiawi
         val (finalTitle, finalBody) = when (type) {
             "friend_request" -> {
                 "Permintaan Pertemanan Baru" to "$senderName ingin berteman denganmu di BelaJr!"
@@ -71,11 +69,10 @@ class BelajrMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        // Tentukan activity tujuan berdasarkan tipe notifikasi
         val targetActivity = when (type) {
             "new_message" -> ChatActivity::class.java
             "friend_request" -> FriendRequestActivity::class.java
-            else -> FriendRequestActivity::class.java // Default
+            else -> FriendRequestActivity::class.java
         }
 
         val intent = Intent(this, targetActivity).apply {
@@ -91,7 +88,7 @@ class BelajrMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.mipmap.ic_launcher) 
             .setContentTitle(title)
             .setContentText(body)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(body)) // Agar pesan panjang tidak terpotong
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
@@ -101,7 +98,6 @@ class BelajrMessagingService : FirebaseMessagingService() {
             NotificationManagerCompat.from(this)
                 .notify(System.currentTimeMillis().toInt(), notification)
         } catch (e: SecurityException) {
-            // Permission POST_NOTIFICATIONS handling
         }
     }
 

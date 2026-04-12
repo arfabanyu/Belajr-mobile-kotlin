@@ -20,7 +20,6 @@ class MatchViewModel : ViewModel() {
     private val _results = MutableStateFlow<List<PartnerWithStatus>>(emptyList())
     val results = _results.asStateFlow()
 
-    // Untuk kompatibilitas dengan kode HomePage lama
     val partners: LiveData<List<PartnerWithStatus>> = _results.asLiveData()
 
     private val _interests = MutableStateFlow<List<String>>(emptyList())
@@ -65,7 +64,6 @@ class MatchViewModel : ViewModel() {
         viewModelScope.launch {
             friendRepo.cancelRequest(receiverId, requestId)
                 .onSuccess {
-                    // Segera refresh data agar tombol kembali jadi "Connect"
                     searchPartners(keyword)
                 }
                 .onFailure { _error.value = "Gagal membatalkan: ${it.message}" }

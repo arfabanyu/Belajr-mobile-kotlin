@@ -45,8 +45,7 @@ class SubjectAdapter(
         holder.itemView.setOnClickListener {
             val oldSelected = selectedSubject
             selectedSubject = subject.name
-            
-            // Re-bind old and new selected items to update UI
+
             val oldIndex = subjects.indexOfFirst { it.name == oldSelected }
             if (oldIndex != -1) notifyItemChanged(oldIndex)
             notifyItemChanged(position)
