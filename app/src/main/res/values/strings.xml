@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BelaJR</string>
+    <string name="app_name">Belajr</string>
     <string name="login_title">Masuk</string>
     <string name="register_title">Daftar</string>
     <string name="email_hint">Email</string>

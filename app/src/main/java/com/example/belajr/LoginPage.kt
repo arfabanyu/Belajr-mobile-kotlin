@@ -37,7 +37,8 @@ class LoginPage : AppCompatActivity() {
             insets
         }
 
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        // Pastikan ViewModelProvider menggunakan owner yang tepat
+        authViewModel = ViewModelProvider(this as AppCompatActivity)[AuthViewModel::class.java]
 
         val emailEditText = findViewById<EditText>(R.id.email)
         val passwordEditText = findViewById<EditText>(R.id.password)
@@ -46,11 +47,12 @@ class LoginPage : AppCompatActivity() {
         val tvForgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
 
         tvForgotPassword.setOnClickListener {
-            Toast.makeText(this, "Fitur forgot password akan segera hadir!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@LoginPage, "Fitur forgot password akan segera hadir!", Toast.LENGTH_SHORT).show()
         }
 
         tvRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterPage::class.java))
+            val intent = Intent(this@LoginPage, RegisterPage::class.java)
+            startActivity(intent)
         }
 
         loginButton.setOnClickListener {
@@ -60,13 +62,11 @@ class LoginPage : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 authViewModel.login(email, password)
             } else {
-                Toast.makeText(this, "Email dan password tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginPage, "Email dan password tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
         }
 
         observeAuthState()
-        
-        authViewModel.checkSession()
     }
 
     private fun observeAuthState() {
@@ -80,7 +80,8 @@ class LoginPage : AppCompatActivity() {
                         }
                         is AuthState.Success -> {
                             if (!isFinishing) {
-                                startActivity(Intent(this@LoginPage, HomePage::class.java))
+                                val intent = Intent(this@LoginPage, HomePage::class.java)
+                                startActivity(intent)
                                 finish()
                             }
                         }
